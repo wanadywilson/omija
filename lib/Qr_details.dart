@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'globals.dart';
 
 class QRPersonDetailScreen extends StatelessWidget {
   final String personName;
@@ -27,7 +28,7 @@ class QRPersonDetailScreen extends StatelessWidget {
         title: Text("Generate QRIS", style: TextStyle(color: Colors.white)),
         centerTitle: true,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back, color: Colors.white),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -72,23 +73,36 @@ class QRPersonDetailScreen extends StatelessWidget {
               SizedBox(height: 16),
 
               // Amount
-              Center(
-                child: Text(
-                  "Bill To:",
-                  style: TextStyle(fontSize: 18),
-                ),
-              ),
-               SizedBox(height: 6),
-              // Person Name
-              
-              Center(
-                child: Text(
-                  personName,
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                ),
-              ),
+              Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text("Transfer from:", style: TextStyle(fontSize: 16)),
+        SizedBox(height: 4),
+        Text(
+          personName,
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+    Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text("Transfer To:", style: TextStyle(fontSize: 16)),
+        SizedBox(height: 4),
+        Text(
+         longName, // 👈 from your global.dart
+          style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ),
+  ],
+),
+SizedBox(height:20),
 
-              SizedBox(height: 6),
 
               // Amount
               Center(

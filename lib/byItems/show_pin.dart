@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import '../models.dart';
 import 'success_receipt_details_items.dart';
+import '../globals.dart';
+import 'package:http/http.dart' as http;
 
 class PinConfirmationPop extends StatefulWidget {
   final Receipt receipt;
@@ -33,18 +37,83 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
     }
   }
 
-  void _confirmPin() {
-    Navigator.pop(context); // Close the popup first
+  Map<String, dynamic> receiptToJson(Receipt receipt) {
+  return {
+    "title": receipt.title,
+    "date": receipt.date,
+    "creator": username,
+    "grandTotal": receipt.grandTotal,
+    "subTotal": receipt.subTotal,
+    "serviceCharge": receipt.serviceCharge,
+    "tax": receipt.tax,
+    "serviceChargePercentage": receipt.serviceChargePercentage,
+    "taxPercentage": receipt.taxPercentage,
+    "people": receipt.people.map((p) => {
+      "name": p.name,
+      "phone": p.phone,
+      "amount": p.amount,
+      "percentage": p.percentage,
+      "tax": p.tax,
+      "serviceCharge": p.serviceCharge,
+      "items": p.items.map((item) => {
+        "name": item.name,
+        "quantity": item.quantity,
+        "singlePrice": item.singlePrice,
+        "totalPrice": item.totalPrice,
+      }).toList()
+    }).toList(),
+    "items": receipt.items.map((item) => {
+      "name": item.name,
+      "quantity": item.quantity,
+      "singlePrice": item.singlePrice,
+      "totalPrice": item.totalPrice,
+    }).toList(),
+  };
+}
 
+ void _confirmPin() {
+    // Simulate confirming transaction
     Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => SuccessReceiptScreen(
-          receipt: widget.receipt,
+  context,
+  MaterialPageRoute(
+    builder: (_) => SuccessReceiptScreen(receipt: widget.receipt),
+  ),
+);
+ // Close the popup
+  }
+
+/*
+  void _confirmPin() async {
+  Navigator.pop(context); // Close the popup
+
+  // Convert receipt to JSON
+  final receiptJson = receiptToJson(widget.receipt);
+
+  try {
+    final response = await http.post(
+      Uri.parse('https://your-api-url.com/split'), // 🔁 Replace with real URL
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(receiptJson),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SuccessReceiptScreen(receipt: widget.receipt),
         ),
-      ),
+      );
+    } else {
+      throw Exception("Failed to send receipt: ${response.statusCode}");
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error sending receipt: $e")),
     );
   }
+}
+*/
+
 
   @override
   Widget build(BuildContext context) {
@@ -55,7 +124,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      child: Column(
+      child: SafeArea(child: Column(
         children: [
           // Close Button
           Align(
@@ -141,24 +210,32 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
           ),
 
           // Confirm Button
-          SizedBox(
-            width: double.infinity,
-            child: ElevatedButton(
-              onPressed: (enteredPin[0].isNotEmpty && enteredPin[1].isNotEmpty)
-                  ? _confirmPin
-                  : null,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Color.fromARGB(255, 94, 19, 16),
-                padding: EdgeInsets.symmetric(vertical: 18),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30),
-                ),
-              ),
-              child: Text("Confirm", style: TextStyle(fontSize: 18, color: Colors.white)),
-            ),
+          // Confirm Button + bottom padding
+Column(
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    SizedBox(
+      width: double.infinity,
+      child: ElevatedButton(
+        onPressed: (enteredPin[0].isNotEmpty && enteredPin[1].isNotEmpty)
+            ? _confirmPin
+            : null,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(255, 94, 19, 16),
+          padding: EdgeInsets.symmetric(vertical: 18),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(30),
           ),
+        ),
+        child: Text("Confirm", style: TextStyle(fontSize: 18, color: Colors.white)),
+      ),
+    ),
+    SizedBox(height: 16), // ⬅️ Add space between Confirm button and bottom
+  ],
+),
+
         ],
       ),
-    );
+    ));
   }
 }

@@ -36,10 +36,6 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
 
   void _confirmPin() {
     // Simulate confirming transaction
-    print("✅ Confirmed Receipt: ${widget.receipt.title}");
-    print("Split Method: ${widget.splitMethod}");
-    print("PIN Entered: ${enteredPin.join(", ")}");
-
     Navigator.pushReplacement(
   context,
   MaterialPageRoute(

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
-import 'byOCR/camera.dart';
+import 'byItems/byOCR/camera.dart';
 import 'split_bill_manual_selection.dart';
 
 

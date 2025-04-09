@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import '../main.dart';
+import '../globals.dart';
 
 class ReceiptScreen extends StatelessWidget {
   final String amount;
@@ -217,7 +218,7 @@ Column(
           ),
           SizedBox(height: 4),
           Text(
-            'Octo Cumi', // Example: "OCTO Savers (••••5891)"
+            longName, // Example: "OCTO Savers (••••5891)"
             style: TextStyle(fontSize: 14),
           ),
         ],

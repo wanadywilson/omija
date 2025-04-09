@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_contact_picker/model/contact.dart';
 import 'package:intl/intl.dart';
-import 'confirm_receipt_details_amount.dart'; // Your next screen
+import 'split_bill_method.dart'; // Your next screen
 import '../models.dart'; // Import the Person and Receipt class
 import 'package:flutter_native_contact_picker/flutter_native_contact_picker.dart';
 import '../globals.dart';
@@ -18,7 +18,7 @@ class _EnterReceiptDetailsAmountScreenState extends State<EnterReceiptDetailsAmo
 
   bool isButtonEnabled = false;
 
-  List<Person> _people = [Person(name: "Me")]; // Default user
+  List<Person> _people = []; // Default user
 
   @override
   void initState() {
@@ -26,6 +26,14 @@ class _EnterReceiptDetailsAmountScreenState extends State<EnterReceiptDetailsAmo
     _titleController.addListener(_checkInput);
     _dateController.addListener(_checkInput);
     _amountController.addListener(_formatAndCheckAmount);
+
+    _people.add(Person(
+    name: longName,
+    phone: phoneNumber,
+    verified: true,
+    avatarColor: _getColorForPerson(0),
+  ));
+
   }
 
   void _checkInput() {
@@ -161,17 +169,19 @@ Future<void> _pickContactAndFill(TextEditingController nameController, TextEditi
                   SizedBox(width: 10),
                   ElevatedButton(
                     onPressed: () {
-                      if (nameController.text.trim().isNotEmpty) {
-                        setState(() {
-                          _people.add(Person(
-                            name: nameController.text.trim(),
-                            phone: phoneController.text.trim(),
-                            verified: isVerified
-                          ));
-                        });
-                        Navigator.pop(context);
-                      }
-                    },
+  if (nameController.text.trim().isNotEmpty) {
+    setState(() {
+      _people.add(Person(
+        name: nameController.text.trim(),
+        phone: phoneController.text.trim(),
+        verified: isVerified,
+        avatarColor: _getColorForPerson(_people.length), // 👈 assign color based on index
+      ));
+    });
+    Navigator.pop(context);
+  }
+},
+
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Color.fromARGB(255, 94, 19, 16),
                     ),
@@ -287,7 +297,7 @@ Color _getColorForPerson(int index) {
                 return ListTile(
   contentPadding: EdgeInsets.zero,
  leading: CircleAvatar(
-  backgroundColor: _getColorForPerson(index),
+  backgroundColor: person.avatarColor = _getColorForPerson(index),
   child: Text(
     person.name[0].toUpperCase(),
     style: TextStyle(color: Colors.white),

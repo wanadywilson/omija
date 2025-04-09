@@ -11,6 +11,8 @@ class SummaryReceiptDetailsAmountScreen extends StatelessWidget {
 
   String _format(double value) => NumberFormat("#,###").format(value);
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,8 +59,8 @@ class SummaryReceiptDetailsAmountScreen extends StatelessWidget {
                           Row(
                             children: [
                               CircleAvatar(
-                                backgroundColor: Colors.purple.shade100,
-                                child: Text(p.name[0].toUpperCase(), style: TextStyle(color: Colors.black)),
+                                backgroundColor: p.avatarColor,
+                                child: Text(p.name[0].toUpperCase(), style: TextStyle(color: Colors.white)),
                               ),
                               SizedBox(width: 10),
                               Text(p.name),

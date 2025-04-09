@@ -3,16 +3,16 @@ import 'package:intl/intl.dart';
 import '../models.dart';
 import 'review_items.dart';
 
-class ManualItemEntryScreen extends StatefulWidget {
+class EditItemsScreen extends StatefulWidget {
   final Receipt receipt;
 
-  ManualItemEntryScreen({required this.receipt});
+  EditItemsScreen({required this.receipt});
 
   @override
-  _ManualItemEntryScreenState createState() => _ManualItemEntryScreenState();
+  _EditItemsScreenState createState() => _EditItemsScreenState();
 }
 
-class _ManualItemEntryScreenState extends State<ManualItemEntryScreen> {
+class _EditItemsScreenState extends State<EditItemsScreen> {
   List<Item> items = [];
 
   late TextEditingController taxPercentageController;
@@ -144,25 +144,37 @@ void _updateServiceChargePercentage() {
     );
   }
 
-  Widget _buildReceiptInfo() {
-    return Container(
-      width: double.infinity,
-      padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
-      margin: EdgeInsets.only(bottom: 10),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6)],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Text(widget.receipt.title, style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-          Text(widget.receipt.date, style: TextStyle(fontSize: 14, color: Colors.grey)),
-        ],
-      ),
-    );
-  }
+Widget _buildReceiptInfo() {
+  return Container(
+    width: double.infinity,
+    padding: EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+    margin: EdgeInsets.only(bottom: 10),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(16),
+      boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 6)],
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Expanded(
+          child: Text(
+            widget.receipt.title,
+            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            overflow: TextOverflow.ellipsis,
+            maxLines: 1,
+          ),
+        ),
+        SizedBox(width: 10), // spacing between title and date
+        Text(
+          widget.receipt.date,
+          style: TextStyle(fontSize: 14, color: Colors.grey),
+        ),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildItemList() {
   return ListView.builder(
@@ -345,7 +357,9 @@ void _updateServiceChargePercentage() {
 
 
   Widget _buildNextButton() {
-    return SizedBox(
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 24), // 👈 adds space from bottom
+    child: SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
@@ -359,10 +373,14 @@ void _updateServiceChargePercentage() {
             ),
           );
         },
-
-        style: ElevatedButton.styleFrom(backgroundColor: Color.fromARGB(255, 94, 19, 16)),
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(255, 94, 19, 16),
+          padding: EdgeInsets.symmetric(vertical: 14),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+        ),
         child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
       ),
-    );
-  }
+    ),
+  );
+}
 }

@@ -26,9 +26,16 @@ class SplitSummaryScreen extends StatelessWidget {
         child: Column(
           children: [
             Text(
-              receipt.title,
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
+        receipt.title,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      ),
+      SizedBox(height: 4),
+      Text(
+        receipt.date,
+        style: TextStyle(fontSize: 14, color: Colors.grey[700]),
+      ),
             SizedBox(height: 16),
 
             // Scrollable people and summary cards
@@ -45,7 +52,7 @@ class SplitSummaryScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+        padding: const EdgeInsets.fromLTRB(16, 0, 16, 40),
         child: SizedBox(
           width: double.infinity,
           height: 48,
@@ -75,6 +82,7 @@ class SplitSummaryScreen extends StatelessWidget {
     );
   }
 
+
  Widget _buildPersonCard(Person person) {
   final formatter = NumberFormat("#,###");
   final List<Item> items = person.items ?? [];
@@ -92,25 +100,34 @@ class SplitSummaryScreen extends StatelessWidget {
           Row(
             children: [
               CircleAvatar(
-                backgroundColor: Colors.blue,
+                backgroundColor: person.avatarColor,
                 child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.white)),
               ),
               SizedBox(width: 10),
               Text(person.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
             ],
           ),
-          SizedBox(height: 12),
+          Divider(),
+          SizedBox(height: 6),
 
           // Item List
           ...items.map((item) => Padding(
             padding: const EdgeInsets.symmetric(vertical: 2),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(item.name),
-                Text("Rp${formatter.format(item.totalPrice)}"),
-              ],
-            ),
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Expanded(
+      child: Text(
+        item.name,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      ),
+    ),
+    SizedBox(width: 8),
+    Text("Rp${formatter.format(item.totalPrice)}"),
+  ],
+),
+
           )),
 
           Divider(),

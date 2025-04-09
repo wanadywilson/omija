@@ -4,6 +4,7 @@ import 'split_bill.dart';
 import 'package:camera/camera.dart';
 import 'transferMoney/transfer_money.dart';
 import 'animated_splash.dart';
+import 'globals.dart';
 
 
 late List<CameraDescription> cameras;
@@ -72,7 +73,7 @@ class HomeScreen extends StatelessWidget {
                         style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     Text(
-                        'Omija!',
+                        '$longName',
                         style: TextStyle(color: Colors.white, fontSize: 23, fontWeight: FontWeight.bold)
                     )
                    ]

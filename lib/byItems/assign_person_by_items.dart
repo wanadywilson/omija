@@ -39,6 +39,8 @@ class _AssignPersonByItemsManualScreenState
     });
   }
 
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -62,7 +64,7 @@ class _AssignPersonByItemsManualScreenState
                       children: [
                         CircleAvatar(
                           backgroundColor: selectedPersonIndex == index
-                              ? Colors.blue
+                              ? person.avatarColor
                               : Colors.grey[300],
                           child: Text(
                             person.name[0].toUpperCase(),
@@ -144,7 +146,7 @@ class _AssignPersonByItemsManualScreenState
                                   return Padding(
                                     padding: EdgeInsets.only(right: 8),
                                     child: CircleAvatar(
-                                      backgroundColor: Colors.blue,
+                                      backgroundColor: p.avatarColor,
                                       radius: 12,
                                       child: Text(
                                         p.name[0].toUpperCase(),
@@ -236,9 +238,11 @@ class _AssignPersonByItemsManualScreenState
   ),
 ),
 
-          SizedBox(height: 10),
+          SizedBox(height: 35),
         ],
       ),
     );
   }
 }
+
+

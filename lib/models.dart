@@ -7,7 +7,9 @@ class Person {
   double percentage;
   double tax;              
   double serviceCharge;    
+  bool verified;
   List<Item> items;
+  Color? avatarColor;
 
   Person({
     required this.name,
@@ -16,6 +18,8 @@ class Person {
     this.percentage = 0.0,
     this.tax = 0.0,
     this.serviceCharge = 0.0,
+    this.verified = false,
+    this.avatarColor,
     List<Item>? items,
   }) : items = items ?? [];
 }
@@ -27,7 +31,7 @@ class Receipt {
   final String title;
   final String date;
   double grandTotal;
-  final List<Person> people;
+  List<Person> people;
   double subTotal;
   double serviceCharge;
   double tax;
@@ -91,5 +95,25 @@ class Item {
     singlePriceController.dispose();
     quantityController.dispose();
     totalPriceController.dispose();
+  }
+}
+
+class User {
+  final String username;
+  final String longName;
+  final String phoneNumber;
+
+  User({
+    required this.username,
+    required this.longName,
+    required this.phoneNumber,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      username: json['username'],
+      longName: json['long_name'],
+      phoneNumber: json['phone_number'],
+    );
   }
 }

@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import '../models.dart';
-import 'Qr_details.dart';
+import '../Qr_details.dart';
 import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import 'package:screenshot/screenshot.dart';
 import '../main.dart'; // for `cameras` and HomeScreen
+import '../globals.dart';
+
 
 ScreenshotController screenshotController = ScreenshotController();
 
@@ -180,47 +182,85 @@ class _SuccessReceiptScreenState extends State<SuccessReceiptScreen> with Single
   }
 
   Widget _buildPeopleTab() {
-    return Container(
-      color: Colors.white,
-      padding: EdgeInsets.all(20),
-      child: ListView.separated(
-        itemCount: widget.receipt.people.length,
-        separatorBuilder: (_, __) => SizedBox(height: 12),
-        itemBuilder: (context, index) {
-          final person = widget.receipt.people[index];
-          return Card(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            elevation: 2,
-            child: ListTile(
-              leading: CircleAvatar(
-                backgroundColor: Colors.purple.shade100,
-                child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.purple)),
-              ),
-              title: Text(person.name),
-              subtitle: Text("Rp${NumberFormat("#,###").format(person.amount)}"),
-              trailing: IconButton(
-  icon: Icon(Icons.qr_code, color: Colors.grey.shade800),
-  onPressed: () {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => QRPersonDetailScreen(
-          method: widget.method,
-          receiptDate: widget.receipt.date,
-          personName: person.name,
-          amount: person.amount,
-          receiptTitle: widget.receipt.title,
-        ),
-      ),
-    );
-  },
-),
+  return Container(
+    color: Colors.white,
+    padding: EdgeInsets.all(20),
+    child: ListView.separated(
+      itemCount: widget.receipt.people.length,
+      separatorBuilder: (_, __) => SizedBox(height: 12),
+      itemBuilder: (context, index) {
+        final person = widget.receipt.people[index];
+        final isCurrentUser = person.phone == phoneNumber;
+
+        return Card(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+          elevation: 2,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+            child: Row(
+              children: [
+                CircleAvatar(
+                  backgroundColor: person.avatarColor,
+                  child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.white)),
+                ),
+                SizedBox(width: 12),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Flexible(
+                            child: Text(
+                              person.name,
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          if (person.verified) ...[
+                            SizedBox(width: 6),
+                            Icon(Icons.check_circle, color: Colors.green, size: 18),
+                          ],
+                        ],
+                      ),
+                      if (person.phone.isNotEmpty)
+                        Text(
+                          person.phone,
+                          style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                        ),
+                    ],
+                  ),
+                ),
+                Text(
+                  "Rp${NumberFormat("#,###").format(person.amount)}",
+                  style: TextStyle(fontWeight: FontWeight.bold),
+                ),
+                if (!isCurrentUser)
+                  IconButton(
+                    icon: Icon(Icons.qr_code, color: Colors.grey.shade800),
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => QRPersonDetailScreen(
+                            method: widget.method,
+                            receiptDate: widget.receipt.date,
+                            personName: person.name,
+                            amount: person.amount,
+                            receiptTitle: widget.receipt.title,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+              ],
             ),
-          );
-        },
-      ),
-    );
-  }
+          ),
+        );
+      },
+    ),
+  );
+}
 
   Widget _buildDetailRow(String label, String value, {String? subtitle, bool isBold = false}) {
     return Padding(

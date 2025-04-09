@@ -6,6 +6,8 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 import 'package:share_plus/share_plus.dart';
 import '../main.dart'; // or correct relative path
+import '../qr_details.dart';
+import '../globals.dart';
 
 
 ScreenshotController screenshotController = ScreenshotController();
@@ -262,24 +264,101 @@ Widget _buildReceiptTab() {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    children: [
-                      CircleAvatar(
-                        backgroundColor: Colors.purple.shade100,
-                        child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.purple)),
-                      ),
-                      SizedBox(width: 10),
-                      Text(person.name, style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                    ],
-                  ),
+  crossAxisAlignment: CrossAxisAlignment.center,
+  children: [
+    CircleAvatar(
+      backgroundColor: person.avatarColor,
+      radius: 22,
+      child: Text(
+        person.name[0].toUpperCase(),
+        style: TextStyle(color: Colors.white),
+      ),
+    ),
+    SizedBox(width: 10),
+    Expanded(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  children: [
+    Flexible(
+      child: Row(
+        children: [
+          Flexible(
+            child: Text(
+              person.name,
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+              overflow: TextOverflow.ellipsis,
+            ),
+          ),
+          if (person.verified)
+            Padding(
+              padding: const EdgeInsets.only(left: 6),
+              child: Icon(Icons.check_circle, color: Colors.green, size: 18),
+            ),
+        ],
+      ),
+    ),
+    if (person.phone != phoneNumber)
+      IconButton(
+        icon: Icon(Icons.qr_code, color: Colors.grey[700]),
+        tooltip: "Show QR",
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => QRPersonDetailScreen(
+                personName: person.name,
+                amount: person.amount,
+                receiptTitle: widget.receipt.title,
+                receiptDate: widget.receipt.date,
+                method: "Items",
+                percentage: null,
+              ),
+            ),
+          );
+        },
+      ),
+  ],
+),
+
+          if (person.phone.isNotEmpty)
+            Padding(
+              padding: const EdgeInsets.only(top: 4),
+              child: Text(
+                person.phone,
+                style: TextStyle(fontSize: 13, color: Colors.grey[600]),
+              ),
+            ),
+        ],
+      ),
+    ),
+  ],
+),
+
+
                   SizedBox(height: 10),
 
-                  ...person.items.map((item) => Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(item.name),
-                      Text("Rp${formatter.format(item.totalPrice)}"),
-                    ],
-                  )),
+                  ...person.items.map((item) => Padding(
+  padding: const EdgeInsets.symmetric(vertical: 2),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Expanded(
+        child: Text(
+          item.name,
+          overflow: TextOverflow.ellipsis,
+          maxLines: 1,
+          style: TextStyle(color: Colors.black87),
+        ),
+      ),
+      SizedBox(width: 10),
+      Text("Rp${formatter.format(item.totalPrice)}"),
+    ],
+  ),
+)),
+
                   Divider(),
                   _buildDetailRow("Tax", "Rp${formatter.format(person.tax)}"),
                   _buildDetailRow("Service Charge", "Rp${formatter.format(person.serviceCharge)}"),

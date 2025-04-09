@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:octo_split/byAmount/summary_receipt_details_amount.dart';
@@ -14,11 +13,7 @@ class ConfirmReceiptDetailsAmountScreen extends StatefulWidget {
   State<ConfirmReceiptDetailsAmountScreen> createState() => _ConfirmReceiptDetailsAmountScreenState();
 }
 
-List<TextEditingController> _percentageControllers = [];
-double _remainingPercentage = 100;
 
-List<TextEditingController> _exactAmountControllers = [];
-int _exactRemaining = 0;
 
 
 
@@ -26,23 +21,32 @@ class _ConfirmReceiptDetailsAmountScreenState extends State<ConfirmReceiptDetail
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
- @override
+  List<TextEditingController> _percentageControllers = [];
+double _remainingPercentage = 100;
+
+List<TextEditingController> _exactAmountControllers = [];
+double _exactRemaining = 0;
+
+@override
 void initState() {
   super.initState();
   _tabController = TabController(length: 3, vsync: this);
 
-  // For percentage tab
   _percentageControllers = List.generate(
     widget.receipt.people.length,
     (index) => TextEditingController()..addListener(_updateRemainingPercentage),
   );
 
-  // For exact tab
   _exactAmountControllers = List.generate(
     widget.receipt.people.length,
     (index) => TextEditingController()..addListener(_updateExactRemaining),
   );
+
+  // 🧠 Set initial remaining to total grandTotal
+  _exactRemaining = double.tryParse(widget.receipt.grandTotal.toString().replaceAll(',', '')) ?? 0;
 }
+
+
 
 
 
@@ -54,9 +58,10 @@ void dispose() {
   super.dispose();
 }
 
+
 void _updateExactRemaining() {
-  int total = int.tryParse(widget.receipt.grandTotal.toString().replaceAll(',', '')) ?? 0;
-  int sum = 0;
+  double total = double.tryParse(widget.receipt.grandTotal.toString().replaceAll(',', '')) ?? 0;
+  double sum = 0;
 
   for (var controller in _exactAmountControllers) {
     final val = int.tryParse(controller.text.replaceAll(',', '')) ?? 0;
@@ -66,6 +71,22 @@ void _updateExactRemaining() {
   setState(() {
     _exactRemaining = total - sum;
   });
+}
+
+Color getColorForPerson(int index) {
+  const colors = [
+    Colors.red,
+    Colors.green,
+    Colors.orange,
+    Colors.purple,
+    Colors.teal,
+    Colors.indigo,
+    Colors.cyan,
+    Colors.brown,
+    Colors.pink,
+    Colors.deepOrange,
+  ];
+  return colors[index % colors.length];
 }
 
 
@@ -203,19 +224,43 @@ String _format(double value) => NumberFormat("#,###").format(value);
         ),
         ElevatedButton(
           onPressed: () {
-            final selectedMethodIndex = _tabController.index;
-            final selectedMethod = ["Percentage", "Equal", "Exact"][selectedMethodIndex];
+  final selectedMethodIndex = _tabController.index;
+  final selectedMethod = ["Percentage", "Equal", "Exact"][selectedMethodIndex];
 
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SummaryReceiptDetailsAmountScreen(
-                  receipt: widget.receipt,
-                  splitMethod: selectedMethod,
-                ),
-              ),
-            );
-          },
+  // ⬇️ Force equal amount calculation before navigating
+  if (selectedMethod == "Equal") {
+    double total = double.tryParse(widget.receipt.grandTotal.toString().replaceAll(',', '')) ?? 0;
+    double perPerson = widget.receipt.people.isNotEmpty ? total / widget.receipt.people.length : 0;
+
+    for (var person in widget.receipt.people) {
+      person.amount = perPerson;
+      person.percentage = 0;
+    }
+  }
+
+  if (selectedMethod == "Exact") {
+  for (int i = 0; i < widget.receipt.people.length; i++) {
+    final controller = _exactAmountControllers[i];
+    final val = controller.text.replaceAll(',', '');
+    final parsed = double.tryParse(val);
+    if (parsed != null) {
+      widget.receipt.people[i].amount = parsed;
+    }
+  }
+}
+
+
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => SummaryReceiptDetailsAmountScreen(
+        receipt: widget.receipt,
+        splitMethod: selectedMethod,
+      ),
+    ),
+  );
+},
+
           style: ElevatedButton.styleFrom(
             backgroundColor: Color.fromARGB(255, 94, 19, 16),
             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
@@ -252,8 +297,17 @@ String _format(double value) => NumberFormat("#,###").format(value);
             person.amount = calculatedAmount;
 
             return ListTile(
-              leading: CircleAvatar(child: Text(person.name[0].toUpperCase())),
-              title: Text(person.name),
+              leading: CircleAvatar(backgroundColor: person.avatarColor, child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.white))),
+              title: Row(
+  children: [
+    Text(person.name),
+    if (person.verified) ...[
+      SizedBox(width: 6),
+      Icon(Icons.check_circle, color: Colors.green, size: 18),
+    ],
+  ],
+),
+
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -308,8 +362,17 @@ String _format(double value) => NumberFormat("#,###").format(value);
     itemBuilder: (context, index) {
       final person =  widget.receipt.people[index];
       return ListTile(
-        leading: CircleAvatar(child: Text(person.name[0].toUpperCase())),
-        title: Text(person.name),
+        leading: CircleAvatar(backgroundColor: person.avatarColor, child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.white))),
+        title: Row(
+  children: [
+    Text(person.name),
+    if (person.verified) ...[
+      SizedBox(width: 6),
+      Icon(Icons.check_circle, color: Colors.green, size: 18),
+    ],
+  ],
+),
+
         subtitle: person.phone.isNotEmpty ? Text(person.phone) : null,
         trailing: Text("Rp${_format(perPerson)}"),
       );
@@ -330,8 +393,17 @@ String _format(double value) => NumberFormat("#,###").format(value);
             final controller = _exactAmountControllers[index];
 
             return ListTile(
-              leading: CircleAvatar(child: Text(person.name[0].toUpperCase())),
-              title: Text(person.name),
+              leading: CircleAvatar(backgroundColor: person.avatarColor, child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.white))),
+              title: Row(
+  children: [
+    Text(person.name),
+    if (person.verified) ...[
+      SizedBox(width: 6),
+      Icon(Icons.check_circle, color: Colors.green, size: 18),
+    ],
+  ],
+),
+
               subtitle: Text(person.phone),
               trailing: SizedBox(
                 width: 120,

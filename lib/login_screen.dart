@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 import 'main.dart'; // For HomeScreen and cameras
+import 'globals.dart'; // For global variables
 
 class OctoLoginScreen extends StatefulWidget {
-
   const OctoLoginScreen();
 
   @override
@@ -12,24 +14,76 @@ class OctoLoginScreen extends StatefulWidget {
 
 class _OctoLoginScreenState extends State<OctoLoginScreen> {
   final TextEditingController _usernameController = TextEditingController();
-  String? _username;
 
-  void _login() {
-    setState(() {
-      _username = _usernameController.text.trim();
-    });
+  Future<void> _login() async {
+  final input = _usernameController.text.trim();
 
-    if (_username != null && _username!.isNotEmpty) {
+  if (input.isEmpty) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Please enter your username')),
+    );
+    return;
+  }
+
+  // Show loading spinner
+  showDialog(
+    context: context,
+    barrierDismissible: false,
+    builder: (_) => Center(child: CircularProgressIndicator()),
+  );
+
+  try {
+    final data = [{"username":"dgsianipar","long_name":"Dedy Sianipar","phone_number":"088012341234"},{"username":"wwanady","long_name":"Wilson Wanady","phone_number":"088043211234"},{"username":"hsutomo","long_name":"Harto Sutomo","phone_number":"088011223344"}];
+    knownUsers = List<Map<String, dynamic>>.from(data);
+    // Fetch known users list once if empty
+    /*
+    if (knownUsers.isEmpty) {
+      final response = await http.get(
+        Uri.parse('http://141.11.241.147:8080/users/'),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body);
+        if (data is List) {
+          knownUsers = List<Map<String, dynamic>>.from(data);
+        }
+      } else {
+        throw Exception("Failed to fetch known users");
+      }
+    }
+    */
+
+    Navigator.pop(context); // Close loading
+
+    // Look for matching username
+    final user = knownUsers.firstWhere(
+      (u) => u['username'] == input,
+      orElse: () => {},
+    );
+
+    if (user.isNotEmpty) {
+      username = user['username'] ?? '';
+      longName = user['long_name'] ?? '';
+      phoneNumber = user['phone_number'] ?? '';
+
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen(cameras:cameras)),
+        MaterialPageRoute(builder: (context) => HomeScreen(cameras: cameras)),
       );
     } else {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Please enter your username')),
+        SnackBar(content: Text('Invalid username')),
       );
     }
+  } catch (e) {
+    Navigator.pop(context); // Close loading
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Login error. Please try again.')),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -64,7 +118,7 @@ class _OctoLoginScreenState extends State<OctoLoginScreen> {
                   focusedBorder: UnderlineInputBorder(
                     borderSide: BorderSide(color: Colors.white),
                   ),
-                  suffixText: "Lupa user ID?",
+                  suffixText: "Forgot User ID?",
                   suffixStyle: TextStyle(color: Colors.white),
                 ),
               ),
@@ -90,7 +144,7 @@ class _OctoLoginScreenState extends State<OctoLoginScreen> {
                 ],
               ),
               SizedBox(height: 24),
-              Text("Saya punya rekening tapi belum punya user ID", style: TextStyle(color: Colors.white70)),
+              Text("I have an account but no user ID", style: TextStyle(color: Colors.white70)),
               SizedBox(height: 12),
               OutlinedButton(
                 onPressed: () {},
@@ -99,22 +153,23 @@ class _OctoLoginScreenState extends State<OctoLoginScreen> {
                   shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
                   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 14),
                 ),
-                child: Text("Daftar OCTO Mobile", style: TextStyle(color: Colors.white)),
+                child: Text("Register to OCTO Mobile", style: TextStyle(color: Colors.white)),
               ),
               SizedBox(height: 24),
-              Text("Saya belum punya rekening", style: TextStyle(color: Colors.white70)),
+              Text("I don't have any account", style: TextStyle(color: Colors.white70)),
               GestureDetector(
                 onTap: () {},
-                child: Text("Buka rekening sekarang",
-                    style: TextStyle(color: Colors.white, decoration: TextDecoration.underline, fontWeight: FontWeight.bold)),
+                child: Text("Open an account now",
+                    style: TextStyle(
+                        color: Colors.white,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.bold)),
               ),
               Spacer(),
               Column(
                 children: [
-                  Image.asset('images/logo_omo.jpg', scale: 2),
+                  Image.asset('images/logo_omo_login.png', scale: 0.8),
                   SizedBox(height: 10),
-                  Text("OCTO Mobile", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                  Text("by CIMB Niaga", style: TextStyle(color: Colors.white)),
                 ],
               ),
             ],

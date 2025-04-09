@@ -63,73 +63,79 @@ Widget build(BuildContext context) {
 
 
   // 📦 Receipt Summary
-  Widget _buildReceiptSummaryCard() {
-    return Container(
-      padding: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Title & Date
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
+Widget _buildReceiptSummaryCard() {
+  return Container(
+    padding: EdgeInsets.all(16),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+    ),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Title & Date
+        Row(
+          children: [
+            Expanded(
+              child: Text(
                 receipt.title,
                 style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
               ),
-              Text(
-                receipt.date,
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-              ),
-            ],
-          ),
-          Divider(),
+            ),
+            SizedBox(width: 10),
+            Text(
+              receipt.date,
+              style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+            ),
+          ],
+        ),
+        Divider(),
 
-          // Item List
-          ...receipt.items.map((item) {
-            return Padding(
-              padding: EdgeInsets.symmetric(vertical: 8),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(item.name, style: TextStyle(fontWeight: FontWeight.bold)),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(
-                        NumberFormat("#,###").format(item.singlePrice),
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      Text("x${item.quantity}"),
-                      Text(
-                        NumberFormat("#,###").format(item.totalPrice),
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            );
-          }).toList(),
+        // Item List
+        ...receipt.items.map((item) {
+          return Padding(
+            padding: EdgeInsets.symmetric(vertical: 8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(item.name, style: TextStyle(fontWeight: FontWeight.bold)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      NumberFormat("#,###").format(item.singlePrice),
+                      style: TextStyle(color: Colors.grey),
+                    ),
+                    Text("x${item.quantity}"),
+                    Text(
+                      NumberFormat("#,###").format(item.totalPrice),
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          );
+        }).toList(),
 
-          Divider(),
+        Divider(),
 
-          // Subtotal, Service Charge, Tax
-          _buildSummaryRow("Subtotal (items only)", receipt.subTotal),
-          _buildSummaryRow("Service Charge (${receipt.serviceChargePercentage.toStringAsFixed(2)}%)", receipt.serviceCharge),
-          _buildSummaryRow("Tax (${receipt.taxPercentage.toStringAsFixed(2)}%)", receipt.tax),
+        _buildSummaryRow("Subtotal (items only)", receipt.subTotal),
+        _buildSummaryRow("Service Charge (${receipt.serviceChargePercentage.toStringAsFixed(2)}%)", receipt.serviceCharge),
+        _buildSummaryRow("Tax (${receipt.taxPercentage.toStringAsFixed(2)}%)", receipt.tax),
 
-          Divider(),
+        Divider(),
 
-          _buildSummaryRow("Grand Total", receipt.grandTotal, isTotal: true),
-        ],
-      ),
-    );
-  }
+        _buildSummaryRow("Grand Total", receipt.grandTotal, isTotal: true),
+      ],
+    ),
+  );
+}
+
+
+
 
   // 👤 People Summary
  Widget _buildPeopleCard() {
@@ -150,18 +156,38 @@ Widget build(BuildContext context) {
             int index = entry.key;
             Person person = entry.value;
             return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4),
-              child: Row(
-                children: [
-                  CircleAvatar(
-                    radius: 14,
-                    child: Text(person.name.isNotEmpty ? person.name[0].toUpperCase() : '?'),
-                  ),
-                  SizedBox(width: 10),
-                  Text("${index + 1}. ${person.name}", style: TextStyle(fontSize: 14)),
-                ],
-              ),
-            );
+  padding: const EdgeInsets.symmetric(vertical: 4),
+  child: Row(
+    children: [
+      CircleAvatar(
+        backgroundColor: person.avatarColor,
+        radius: 14,
+        child: Text(
+          person.name.isNotEmpty ? person.name[0].toUpperCase() : '?',
+          style: TextStyle(color: Colors.white, fontSize: 12),
+        ),
+      ),
+      SizedBox(width: 10),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              Text("${index + 1}. ${person.name}", style: TextStyle(fontSize: 14)),
+              if (person.verified) ...[
+                SizedBox(width: 4),
+                Icon(Icons.check_circle, size: 16, color: Colors.green),
+              ],
+            ],
+          ),
+          if (person.phone.isNotEmpty)
+            Text(person.phone, style: TextStyle(fontSize: 12, color: Colors.grey[600])),
+        ],
+      ),
+    ],
+  ),
+);
+
           }).toList(),
         ),
       ],

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:octo_split/byAmount/enter_receipt_details_amount.dart';
-import 'package:octo_split/byItems/enter_receipt_details_items.dart';
+
+import 'byItems/edit_receipt_details.dart';
+import 'models.dart';
+import '../globals.dart';
 
 class SplitBillSelectionScreen extends StatelessWidget {
 
@@ -52,7 +55,18 @@ class SplitBillSelectionScreen extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EnterReceiptDetailsItemsScreen(
+                    builder: (context) => EditReceiptDetailsScreen(initialReceipt: Receipt(
+                      title: "",
+                      date: "",
+                      grandTotal: 0,
+                      serviceCharge: 0,
+                      serviceChargePercentage: 0,
+                      tax: 0,
+                      taxPercentage: 0,
+                      subTotal: 0,
+                      people: [Person(name: longName, phone: phoneNumber, verified: true)]
+                      
+                      ),
                     ),
                   ),
                 );
