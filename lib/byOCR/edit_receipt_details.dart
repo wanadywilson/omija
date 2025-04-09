@@ -146,6 +146,23 @@ void initState() {
   );
 }
 
+  Color _getColorForPerson(int index) {
+  const colors = [
+    Colors.red,
+    Colors.green,
+    Colors.orange,
+    Colors.purple,
+    Colors.teal,
+    Colors.indigo,
+    Colors.cyan,
+    Colors.brown,
+    Colors.pink,
+    Colors.deepOrange,
+  ];
+  return colors[index % colors.length];
+}
+
+
   Widget _inputField(
     String label,
     String hint,
@@ -223,9 +240,12 @@ void initState() {
                   return ListTile(
                     contentPadding: EdgeInsets.zero,
                     leading: CircleAvatar(
-                      backgroundColor: Colors.blue,
-                      child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.white)),
-                    ),
+  backgroundColor: _getColorForPerson(index),
+  child: Text(
+    person.name[0].toUpperCase(),
+    style: TextStyle(color: Colors.white),
+  ),
+),
                     title: Text("${index + 1}. ${person.name}"),
                     subtitle: person.phone.isNotEmpty ? Text(person.phone) : null,
                     trailing: index == 0
