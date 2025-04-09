@@ -60,7 +60,7 @@ void _confirmPin() {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
-      height: 700, // Increased height to fit everything
+      height: 850, // Increased height to fit everything
       child: Column(
         children: [
           // Close Button

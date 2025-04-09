@@ -75,18 +75,23 @@ Widget build(BuildContext context) {
         children: [
           // Title & Date
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                receipt.title,
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-              ),
-              Text(
-                receipt.date,
-                style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-              ),
-            ],
-          ),
+  children: [
+    Expanded(
+      child: Text(
+        receipt.title,
+        style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+        overflow: TextOverflow.ellipsis, // 👈 truncate with ...
+        maxLines: 1,
+      ),
+    ),
+    SizedBox(width: 10),
+    Text(
+      receipt.date,
+      style: TextStyle(fontSize: 14, color: Colors.grey[600]),
+    ),
+  ],
+),
+
           Divider(),
 
           // Item List

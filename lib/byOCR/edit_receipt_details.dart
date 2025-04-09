@@ -284,41 +284,44 @@ void initState() {
                 ),
               ),
             ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: isButtonEnabled
-                    ? () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditItemsScreen(
-                              receipt: Receipt(
-                                title: _titleController.text.trim(),
-                                date: _dateController.text.trim(),
-                                subTotal: widget.initialReceipt.subTotal,
-                                grandTotal: widget.initialReceipt.grandTotal,
-                                tax: widget.initialReceipt.tax,
-                                taxPercentage: widget.initialReceipt.taxPercentage,
-                                serviceCharge: widget.initialReceipt.serviceCharge,
-                                serviceChargePercentage: widget.initialReceipt.serviceChargePercentage,
-                                people: _people,
-                                items: widget.initialReceipt.items, // ✅ pass items from the fetched receipt
-                              ),
-
-                            ),
-                          ),
-                        );
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isButtonEnabled ? Color.fromARGB(255, 94, 19, 16) : Colors.grey,
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            Padding(
+  padding: const EdgeInsets.only(bottom: 24), // 👈 adds bottom space for nav bar
+  child: SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      onPressed: isButtonEnabled
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditItemsScreen(
+                    receipt: Receipt(
+                      title: _titleController.text.trim(),
+                      date: _dateController.text.trim(),
+                      subTotal: widget.initialReceipt.subTotal,
+                      grandTotal: widget.initialReceipt.grandTotal,
+                      tax: widget.initialReceipt.tax,
+                      taxPercentage: widget.initialReceipt.taxPercentage,
+                      serviceCharge: widget.initialReceipt.serviceCharge,
+                      serviceChargePercentage: widget.initialReceipt.serviceChargePercentage,
+                      people: _people,
+                      items: widget.initialReceipt.items,
+                    ),
+                  ),
                 ),
-                child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
-              ),
-            ),
+              );
+            }
+          : null,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isButtonEnabled ? Color.fromARGB(255, 94, 19, 16) : Colors.grey,
+        padding: EdgeInsets.symmetric(vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      ),
+      child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
+    ),
+  ),
+),
+
           ],
         ),
       ),

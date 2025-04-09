@@ -15,13 +15,13 @@ Future<Receipt> fetchReceiptAndItems() async {
   final itemsResponse = await http.get(Uri.parse(receiptItemsUrl));
 
   if (receiptResponse.statusCode == 200 && itemsResponse.statusCode == 200) {
-    final receiptJson = jsonDecode(receiptResponse.body)[0]; // assuming list
+    final receiptJson = jsonDecode(receiptResponse.body)[0];
     final itemsJson = jsonDecode(itemsResponse.body);
 
     final List<Item> items = itemsJson.map<Item>((item) {
-      final name = item['food'];
-      final quantity = item['quantity'];
-      final singlePrice = item['quantity_price'] * 1.0;
+      final name = item['item'];
+      final quantity = int.tryParse(item['quantity'].toString()) ?? 1;
+      final singlePrice = double.tryParse(item['quantity_price'].toString()) ?? 0.0;
       final totalPrice = singlePrice * quantity;
 
       return Item(
@@ -32,15 +32,19 @@ Future<Receipt> fetchReceiptAndItems() async {
       );
     }).toList();
 
+    final double subTotal = double.tryParse(receiptJson['total_price'].toString()) ?? 0.0;
+    final double tax = double.tryParse(receiptJson['tax'].toString()) ?? 0.0;
+    final double grandTotal = subTotal + tax;
+
     return Receipt(
-      title: receiptJson['restaurant_name'],
+      title: receiptJson['place_name'],
       date: receiptJson['invoice_date'],
-      tax: receiptJson['restaurant_tax'] * 1.0,
+      tax: tax,
       taxPercentage: 0,
       serviceCharge: 0,
       serviceChargePercentage: 0,
-      subTotal: receiptJson['total_price_for_all_items'] * 1.0,
-      grandTotal: (receiptJson['total_price_for_all_items'] + receiptJson['restaurant_tax']) * 1.0,
+      subTotal: subTotal,
+      grandTotal: grandTotal,
       people: [Person(name: 'Me')],
       items: items,
     );
@@ -48,6 +52,7 @@ Future<Receipt> fetchReceiptAndItems() async {
     throw Exception('Failed to fetch receipt data');
   }
 }
+
 
 class DisplayPictureScreen extends StatelessWidget {
   final String imagePath;
@@ -114,26 +119,34 @@ class DisplayPictureScreen extends StatelessWidget {
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
                     ),
                     onPressed: () async {
-                      try {
-                        // 1. Send the image
-                        await sendImageToApi(imagePath);
+  showDialog(
+    context: context,
+    barrierDismissible: false, // prevent closing manually
+    builder: (_) => Center(
+      child: CircularProgressIndicator(),
+    ),
+  );
 
-                        // 2. Fetch data from the backend (receipt + items)
-                        Receipt populatedReceipt = await fetchReceiptAndItems();
+  try {
+    await sendImageToApi(imagePath);
+    Receipt populatedReceipt = await fetchReceiptAndItems();
 
-                        // 3. Go to edit screen
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => EditReceiptDetailsScreen(initialReceipt: populatedReceipt),
-                          ),
-                        );
-                      } catch (e) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("Failed to process image: $e")),
-                        );
-                      }
-                    },
+    Navigator.pop(context); // dismiss loading dialog
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EditReceiptDetailsScreen(initialReceipt: populatedReceipt),
+      ),
+    );
+  } catch (e) {
+    Navigator.pop(context); // dismiss loading dialog
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Failed to process image: $e")),
+    );
+  }
+},
+
                     child: Text('Next', style: TextStyle(fontSize: 16)),
                   ),
                 ),

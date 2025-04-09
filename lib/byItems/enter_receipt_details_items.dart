@@ -275,39 +275,43 @@ class _EnterReceiptDetailsItemsScreenState extends State<EnterReceiptDetailsItem
                 ),
               ),
             ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: isButtonEnabled
-                    ? () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ManualItemEntryScreen(
-                              receipt: Receipt(
-                                title: _titleController.text.trim(),
-                                subTotal: 0,
-                                date: _dateController.text.trim(),
-                                grandTotal: 0,
-                                people: _people,
-                                tax: 0,
-                                taxPercentage: 0,
-                                serviceCharge: 0,
-                                serviceChargePercentage: 0,
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isButtonEnabled ? Color.fromARGB(255, 94, 19, 16) : Colors.grey,
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+            Padding(
+  padding: const EdgeInsets.only(bottom: 24), // adjust spacing here
+  child: SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      onPressed: isButtonEnabled
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ManualItemEntryScreen(
+                    receipt: Receipt(
+                      title: _titleController.text.trim(),
+                      subTotal: 0,
+                      date: _dateController.text.trim(),
+                      grandTotal: 0,
+                      people: _people,
+                      tax: 0,
+                      taxPercentage: 0,
+                      serviceCharge: 0,
+                      serviceChargePercentage: 0,
+                    ),
+                  ),
                 ),
-                child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
-              ),
-            ),
+              );
+            }
+          : null,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isButtonEnabled ? Color.fromARGB(255, 94, 19, 16) : Colors.grey,
+        padding: EdgeInsets.symmetric(vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      ),
+      child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
+    ),
+  ),
+),
+
           ],
         ),
       ),

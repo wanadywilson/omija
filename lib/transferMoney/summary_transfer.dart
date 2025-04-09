@@ -205,11 +205,13 @@ class SummaryScreen extends StatelessWidget {
 
 
   Widget _continueButton(BuildContext context) {
-    return SizedBox(
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 30), // Add spacing from the bottom
+    child: SizedBox(
       width: double.infinity,
       child: ElevatedButton(
         onPressed: () {
-          _showPinConfirmationPopup(context, amount, phoneNumber,message);
+          _showPinConfirmationPopup(context, amount, phoneNumber, message);
         },
         style: ElevatedButton.styleFrom(
           backgroundColor: Color.fromARGB(255, 94, 19, 16),
@@ -218,8 +220,10 @@ class SummaryScreen extends StatelessWidget {
         ),
         child: Text("Continue", style: TextStyle(color: Colors.white, fontSize: 16)),
       ),
-    );
-  }
+    ),
+  );
+}
+
 }
 
 void _showPinConfirmationPopup(BuildContext context, String amount, String phoneNumber, String message) {

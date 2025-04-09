@@ -301,39 +301,43 @@ Future<void> _pickContactAndFill(TextEditingController nameController, TextEditi
                 ),
               ),
             ),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: isButtonEnabled
-                    ? () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ConfirmReceiptDetailsAmountScreen(
-                              receipt: Receipt(
-                                title: _titleController.text.trim(),
-                                date: _dateController.text.trim(),
-                                grandTotal: double.parse(_amountController.text.trim().replaceAll(',', '')),
-                                people: _people,
-                                serviceCharge: 0,
-                                serviceChargePercentage: 0,
-                                tax: 0,
-                                taxPercentage: 0,
-                                subTotal: 0
-                              ),
-                            ),
-                          ),
-                        );
-                      }
-                    : null,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: isButtonEnabled ? Color.fromARGB(255, 94, 19, 16) : Colors.grey,
-                  padding: EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+           Padding(
+  padding: const EdgeInsets.only(bottom: 30), // adds space above bottom nav
+  child: SizedBox(
+    width: double.infinity,
+    child: ElevatedButton(
+      onPressed: isButtonEnabled
+          ? () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ConfirmReceiptDetailsAmountScreen(
+                    receipt: Receipt(
+                      title: _titleController.text.trim(),
+                      date: _dateController.text.trim(),
+                      grandTotal: double.parse(_amountController.text.trim().replaceAll(',', '')),
+                      people: _people,
+                      serviceCharge: 0,
+                      serviceChargePercentage: 0,
+                      tax: 0,
+                      taxPercentage: 0,
+                      subTotal: 0,
+                    ),
+                  ),
                 ),
-                child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
-              ),
-            ),
+              );
+            }
+          : null,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: isButtonEnabled ? Color.fromARGB(255, 94, 19, 16) : Colors.grey,
+        padding: EdgeInsets.symmetric(vertical: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
+      ),
+      child: Text("Next", style: TextStyle(color: Colors.white, fontSize: 16)),
+    ),
+  ),
+),
+
           ],
         ),
       ),

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'split_bill.dart';
 import 'package:camera/camera.dart';
 import 'transferMoney/transfer_money.dart';
+import 'animated_splash.dart';
 
 
 late List<CameraDescription> cameras;
@@ -31,7 +32,7 @@ class OCTOMobileApp extends StatelessWidget {
 
 
       ),
-      home: HomeScreen(cameras: cameras),
+      home: AnimatedSplash(),
     );
   }
 }
@@ -51,7 +52,10 @@ class HomeScreen extends StatelessWidget {
           
         ],
       ),
-     body: Column(
+     body: Container(
+  color: Colors.white, // ✅ Set white background
+  child: Column(
+
         children: [
           Container(
             padding: EdgeInsets.all(16),
@@ -303,9 +307,13 @@ class HomeScreen extends StatelessWidget {
 
 
 
-        ]),
+                ],
+      ),
+  ),
+
 
       bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
         currentIndex: 0, // or use a variable for dynamic selection
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Color.fromARGB(255,94,19,16),

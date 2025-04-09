@@ -185,51 +185,51 @@ String _format(double value) => NumberFormat("#,###").format(value);
   }
 
   Widget _buildBottomButtons() {
-    return Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          OutlinedButton(
-            onPressed: () => Navigator.pop(context),
-            style: OutlinedButton.styleFrom(
-              side: BorderSide(color: Color.fromARGB(255, 94, 19, 16)),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text("Back", style: TextStyle(color: Color.fromARGB(255, 94, 19, 16))),
-            ),
+  return Padding(
+    padding: const EdgeInsets.fromLTRB(16, 0, 16, 32), // ⬅️ Increased bottom padding
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        OutlinedButton(
+          onPressed: () => Navigator.pop(context),
+          style: OutlinedButton.styleFrom(
+            side: BorderSide(color: Color.fromARGB(255, 94, 19, 16)),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           ),
-          ElevatedButton(
-            onPressed: () {
-              final selectedMethodIndex = _tabController.index;
-              final selectedMethod = ["Percentage", "Equal", "Exact"][selectedMethodIndex];
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text("Back", style: TextStyle(color: Color.fromARGB(255, 94, 19, 16))),
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            final selectedMethodIndex = _tabController.index;
+            final selectedMethod = ["Percentage", "Equal", "Exact"][selectedMethodIndex];
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => SummaryReceiptDetailsAmountScreen(
-                    receipt: widget.receipt,
-                    splitMethod: selectedMethod,
-                  ),
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SummaryReceiptDetailsAmountScreen(
+                  receipt: widget.receipt,
+                  splitMethod: selectedMethod,
                 ),
-              );
-            }
-,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: Color.fromARGB(255, 94, 19, 16),
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              child: Text("Next", style: TextStyle(color: Colors.white)),
-            ),
+              ),
+            );
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Color.fromARGB(255, 94, 19, 16),
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(25)),
           ),
-        ],
-      ),
-    );
-  }
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+            child: Text("Next", style: TextStyle(color: Colors.white)),
+          ),
+        ),
+      ],
+    ),
+  );
+}
+
 
   Widget _buildPercentageTab() {
   double totalAmount = double.tryParse(widget.receipt.grandTotal.toString().replaceAll(',', '')) ?? 0;

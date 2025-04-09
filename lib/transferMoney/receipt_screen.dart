@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
+import '../main.dart';
 
 class ReceiptScreen extends StatelessWidget {
   final String amount;
@@ -19,139 +21,235 @@ class ReceiptScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String formattedTime = DateFormat('dd MMM yyyy HH:mm').format(transactionTime);
+    
+     return Scaffold(
+      backgroundColor: Color.fromARGB(255, 94, 19, 16),
+      appBar: AppBar(
+        
+        backgroundColor: Color.fromARGB(255, 94, 19, 16),
+        automaticallyImplyLeading: false, // Remove default back button
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            // Close Button
+            // Close Button
+GestureDetector(
+  onTap: () {
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => HomeScreen(cameras: cameras)),
+      (Route<dynamic> route) => false,
+    );
+  },
+  child: Row(
+    children: [
+      Icon(Icons.close, color: Colors.white),
+      SizedBox(width: 5),
+      Text(
+        "Close",
+        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+    ],
+  ),
+),
 
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 94, 19, 16),
-      body: Stack(
-        children: [
-          // Background image
-          Positioned.fill(
-            child: Image.asset(
-              'images/receipt_omo2.jpg',
-              fit: BoxFit.cover,
-            ),
-          ),
 
-          // SafeArea to prevent overlap with status bar
-          SafeArea(
-            child: Stack(
-              children: [
-                // Close Button (top left)
-                Positioned(
-                  top: 12,
-                  left: 16,
-                  child: GestureDetector(
-                    onTap: () => Navigator.pop(context),
-                    child: Row(
-                      children: [
-                        Icon(Icons.close, color: Colors.white),
-                        SizedBox(width: 5),
-                        Text("Close", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                ),
-
-                // Share Button (top right)
-                Positioned(
-                  top: 12,
-                  right: 16,
-                  child: GestureDetector(
-                    onTap: () {
-                      // Add your share logic here
-                    },
-                    child: Row(
-                      children: [
-                        Icon(Icons.share, color: Colors.white),
-                        SizedBox(width: 5),
-                        Text("Share", style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-                      ],
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Overlayed content inside the receipt
-          Positioned(
-            top: 320,
-            left: 45,
-            right: 45,
-            bottom: 50,
-            child: SingleChildScrollView(
-              child: Column(
+            // Share Button
+            GestureDetector(
+              onTap: () {
+                // Implement share functionality here
+              },
+              child: Row(
                 children: [
-                  // Amount Section
-                  Text("AMOUNT",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black54,
-                      )),
-                  SizedBox(height: 4),
-                  Text("IDR $amount",
-                      style: TextStyle(
-                        fontSize: 30,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black,
-                      )),
-                  SizedBox(height: 20),
-
-                  // Transfer to section
-                  _infoRowDouble(
-                    "Transfer to",
-                    "JEXXXXX SAXXXXX",
-                    trailing: SizedBox(
-                      width: 150,
-                      child: ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color.fromARGB(255, 194, 30, 30),
-                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-                          padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
-                        ),
-                        child: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Text("Add to Favorites", style: TextStyle(color: Colors.white, fontSize: 12)),
-                            SizedBox(width: 4),
-                            Icon(Icons.favorite, size: 16, color: Colors.white),
-                          ],
-                        ),
-                      ),
-                    ),
-                    subtitle: phoneNumber,
+                  Icon(Icons.share, color: Colors.white),
+                  SizedBox(width: 5), // Space between icon and text
+                  Text(
+                    "Share",
+                    style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                   ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: Container(
+              margin: EdgeInsets.all(25),
+              padding: EdgeInsets.all(25),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(40),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Icon(Icons.check_circle, color: Colors.green, size: 60),
+                  Text("Successful!", style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold, color: Colors.green)),
+                  Text("Your transaction is successful", style: TextStyle(fontSize: 14, color: Colors.grey)),
+                  
+                  SizedBox(height: 10),
+                  Image.asset("images/logo_omo.jpg", scale: 2), // OCTO Logo
 
-                  SizedBox(height: 16),
+                  SizedBox(height: 15),
+                  Text("AMOUNT", style: GoogleFonts.poppins(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black)),
+                  SizedBox(height:10),
+                  Text("IDR ${amount}", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
 
-                  // Transaction Time + ID
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Expanded(
-                        child: _infoBlock("Transaction Time", formattedTime),
-                      ),
-                      Expanded(
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: _infoBlock("Transaction ID", transactionId, alignRight: true),
-                        ),
-                      ),
-                    ],
-                  ),
+                  SizedBox(height: 10),
+                  // Transfer To (Left: Label, Right: Recipient Name & Number)
+// Transfer To (Left: Label, Right: Name & Phone)
+Padding(
+  padding: const EdgeInsets.symmetric(vertical: 8),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Aligns to opposite ends
+    crossAxisAlignment: CrossAxisAlignment.start,
+    children: [
+      Text(
+        "Transfer to",
+        style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.end, // Align name & number to the right
+        children: [
+          Text(
+            'JEXXXXX SAXXXXX', // Pass actual recipient's name (JEXXX)
+            style: TextStyle(fontSize: 16),
+          ),
+          SizedBox(height:7),
+          Text(
+            phoneNumber, // Pass actual phone number (135000)
+            style: TextStyle(fontSize: 14, color: Colors.black),
+          ),
+        ],
+      ),
+    ],
+  ),
+),
 
-                  SizedBox(height: 16),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: _infoBlock("Transfer from", "Octo Cumi"),
-                  ),
-                  SizedBox(height: 16),
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: _infoBlock("Message", message),
-                  ),
+
+
+                  SizedBox(height: 10),
+                 // Add to Favorites Button (Aligned Right)
+// Add to Favorites Button (Aligned Right, Icon After Text)
+Padding(
+  padding: const EdgeInsets.symmetric(vertical: 8),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.end, // Align button to the right
+    children: [
+      ElevatedButton(
+        onPressed: () {
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Color.fromARGB(255, 194, 30, 30),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min, // Prevents button from stretching
+          children: [
+            Text("Add to Favorites", style: TextStyle(color: Colors.white)),
+            SizedBox(width: 6), // Spacing between text and icon
+            Icon(Icons.favorite, color: Colors.white),
+          ],
+        ),
+      ),
+    ],
+  ),
+),
+
+
+                  // Transaction Details Row
+// Transaction Details Section
+// Transaction Details Section
+Column(
+  crossAxisAlignment: CrossAxisAlignment.start,
+  children: [
+
+    // Transaction Time & Transaction ID in Row
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                "Transaction Time",
+                style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 4),
+              Text(
+                formattedTime, // Example: "03 Mar 2025 23:36"
+                style: TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              Text(
+                "Transaction ID",
+                style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+              ),
+              SizedBox(height: 4),
+              Text(
+                transactionId, // Example: "TXN174019769747"
+                style: TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+
+    // Transfer From Section
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Transfer from",
+            style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 4),
+          Text(
+            'Octo Cumi', // Example: "OCTO Savers (••••5891)"
+            style: TextStyle(fontSize: 14),
+          ),
+        ],
+      ),
+    ),
+
+    // Message Section (Moved Below)
+    Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            "Messages",
+            style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+          ),
+          SizedBox(height: 4),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                message, // Example: "MB174019769747"
+                style: TextStyle(fontSize: 14),
+              ),
+            ],
+          ),
+        ],
+      ),
+    ),
+  ],
+),
+                  
                 ],
               ),
             ),
@@ -161,53 +259,5 @@ class ReceiptScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoRowDouble(String label, String value, {Widget? trailing, String? subtitle}) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Left label
-          Expanded(
-            flex: 2,
-            child: Text(label, style: TextStyle(color: Colors.grey[600])),
-          ),
-          // Right content
-          Expanded(
-            flex: 4,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Text(value, style: TextStyle(color: Colors.black)),
-                if (subtitle != null) SizedBox(height: 4),
-                if (subtitle != null)
-                  Text(
-                    subtitle,
-                    style: TextStyle(fontSize: 12, color: Colors.black),
-                  ),
-                if (trailing != null) SizedBox(height: 6),
-                if (trailing != null) trailing,
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _infoBlock(String label, String value, {bool alignRight = false}) {
-    return Column(
-      crossAxisAlignment: alignRight ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-      children: [
-        Text(label,
-            style: TextStyle(
-              fontSize: 13,
-              color: Colors.grey[600],
-              fontWeight: FontWeight.bold,
-            )),
-        SizedBox(height: 4),
-        Text(value, style: TextStyle(fontSize: 14, color: Colors.black)),
-      ],
-    );
-  }
+ 
 }

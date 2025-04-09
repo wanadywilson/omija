@@ -90,15 +90,7 @@ class SplitBillScreen extends StatelessWidget {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home, color: Color.fromARGB(255,94,19,16) ), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.credit_card), label: 'My Account'),
-          BottomNavigationBarItem(icon: Icon(Icons.savings), label: 'Wealth'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
-        ],
-      ),
+      
     );
   }
 }

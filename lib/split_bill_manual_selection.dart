@@ -30,7 +30,7 @@ class SplitBillSelectionScreen extends StatelessWidget {
             _buildOptionCard(
               context,
               title: "By Amount",
-              description: "Manually split the bill based on amounts",
+              description: "Quick and easy split with percentage, equal, or exact amount",
               icon: Icons.attach_money,
               onTap: () {
                 Navigator.push(
