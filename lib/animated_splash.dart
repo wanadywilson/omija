@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'main.dart';
+import 'login_screen.dart';
 
 class AnimatedSplash extends StatefulWidget {
   @override
@@ -23,7 +24,7 @@ class _AnimatedSplashState extends State<AnimatedSplash>
     Future.delayed(Duration(seconds: 3), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen(cameras: cameras)),
+        MaterialPageRoute(builder: (context) => OctoLoginScreen()),
       );
     });
   }
