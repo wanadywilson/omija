@@ -46,6 +46,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
   return {
     "title": receipt.title,
     "date": receipt.date,
+    "creator": username,
     "transactionTime": receipt.transactionTime,
     "grandTotal": receipt.grandTotal,
     "subTotal": receipt.subTotal,
