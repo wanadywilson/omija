@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:octo_split/globals.dart';
@@ -81,7 +80,6 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
 
 
   void _confirmPin() async {
-  Navigator.pop(context); // Close the popup
   // Convert receipt to JSON
   final receiptJson = receiptToJson(widget.receipt);
 
@@ -93,6 +91,8 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
     );
 
     if (response.statusCode == 200 || response.statusCode == 201) {
+      Navigator.pop(context); // Close the popup
+
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
