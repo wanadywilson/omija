@@ -301,13 +301,20 @@ String _format(double value) => NumberFormat("#,###").format(value);
               leading: CircleAvatar(backgroundColor: person.avatarColor, child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.white))),
               title: Row(
   children: [
-    Text(person.name),
+    Flexible(
+      child: Text(
+        person.name,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      ),
+    ),
     if (person.verified) ...[
       SizedBox(width: 6),
       Icon(Icons.check_circle, color: Colors.green, size: 18),
     ],
   ],
 ),
+
 
               subtitle: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -369,13 +376,20 @@ String _format(double value) => NumberFormat("#,###").format(value);
         leading: CircleAvatar(backgroundColor: person.avatarColor, child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.white))),
         title: Row(
   children: [
-    Text(person.name),
+    Flexible(
+      child: Text(
+        person.name,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      ),
+    ),
     if (person.verified) ...[
       SizedBox(width: 6),
       Icon(Icons.check_circle, color: Colors.green, size: 18),
     ],
   ],
 ),
+
 
         subtitle: person.phone.isNotEmpty ? Text(person.phone) : null,
         trailing: Text("Rp${_format(perPerson)}"),
@@ -400,13 +414,20 @@ String _format(double value) => NumberFormat("#,###").format(value);
               leading: CircleAvatar(backgroundColor: person.avatarColor, child: Text(person.name[0].toUpperCase(), style: TextStyle(color: Colors.white))),
               title: Row(
   children: [
-    Text(person.name),
+    Flexible(
+      child: Text(
+        person.name,
+        overflow: TextOverflow.ellipsis,
+        maxLines: 1,
+      ),
+    ),
     if (person.verified) ...[
       SizedBox(width: 6),
       Icon(Icons.check_circle, color: Colors.green, size: 18),
     ],
   ],
 ),
+
 
               subtitle: Text(person.phone),
               trailing: SizedBox(

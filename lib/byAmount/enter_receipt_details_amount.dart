@@ -33,6 +33,7 @@ class _EnterReceiptDetailsAmountScreenState extends State<EnterReceiptDetailsAmo
     name: longName,
     phone: phoneNumber,
     verified: true,
+    username: username,
     avatarColor: _getColorForPerson(0),
   ));
 
@@ -310,15 +311,28 @@ Color _getColorForPerson(int index) {
   ),
 ),
 
-  title: Row(
+ title: RichText(
+  text: TextSpan(
+    style: TextStyle(color: Colors.black),
     children: [
-      Text("${index + 1}. ${person.name}"),
-      if (person.verified) ...[
-        SizedBox(width: 6),
-        Icon(Icons.check_circle, color: Colors.green, size: 18),
-      ],
+      TextSpan(
+        text: "${index + 1}. ${person.name}",
+        style: TextStyle(overflow: TextOverflow.ellipsis),
+      ),
+      if (person.verified)
+        WidgetSpan(
+          child: Padding(
+            padding: const EdgeInsets.only(left: 6),
+            child: Icon(Icons.check_circle, color: Colors.green, size: 18),
+          ),
+        ),
     ],
   ),
+  maxLines: 1,
+  overflow: TextOverflow.ellipsis,
+),
+
+
   subtitle: person.phone.isNotEmpty ? Text(person.phone) : null,
   trailing: index == 0
       ? null

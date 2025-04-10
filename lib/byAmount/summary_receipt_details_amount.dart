@@ -53,31 +53,43 @@ class SummaryReceiptDetailsAmountScreen extends StatelessWidget {
 
                     // People
                     ...receipt.people.map((p) => Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 6),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Row(
-                            children: [
-                              CircleAvatar(
-                                backgroundColor: p.avatarColor,
-                                child: Text(p.name[0].toUpperCase(), style: TextStyle(color: Colors.white)),
-                              ),
-                              SizedBox(width: 10),
-                              Text(p.name),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.end,
-                            children: [
-                              if (receipt.method == "Percentage")
-                                Text("${p.percentage.toStringAsFixed(2)}%", style: TextStyle(fontSize: 12)),
-                              Text("Rp${_format(p.amount)}", style: TextStyle(fontWeight: FontWeight.bold)),
-                            ],
-                          ),
-                        ],
-                      ),
-                    )),
+  padding: const EdgeInsets.symmetric(vertical: 6),
+  child: Row(
+    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    children: [
+      Expanded( // ✅ Wrap left section in Expanded to avoid overflow
+        child: Row(
+          children: [
+            CircleAvatar(
+              backgroundColor: p.avatarColor,
+              child: Text(
+                p.name[0].toUpperCase(),
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            SizedBox(width: 10),
+            Expanded( // ✅ Handles long name overflow
+              child: Text(
+                p.name,
+                overflow: TextOverflow.ellipsis,
+                maxLines: 1,
+              ),
+            ),
+          ],
+        ),
+      ),
+      Column(
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          if (receipt.method == "Percentage")
+            Text("${p.percentage.toStringAsFixed(2)}%", style: TextStyle(fontSize: 12)),
+          Text("Rp${_format(p.amount)}", style: TextStyle(fontWeight: FontWeight.bold)),
+        ],
+      ),
+    ],
+  ),
+)),
+
 
                     Divider(),
 
