@@ -23,6 +23,8 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
   
 
   void _addDigit(String digit) {
+  widget.receipt.transactionTime = DateFormat('dd MMM yyyy HH:mm').format(DateTime.now());
+
     if (pinIndex < 2) {
       setState(() {
         enteredPin[pinIndex] = digit;
@@ -78,7 +80,6 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
 
   void _confirmPin() async {
   Navigator.pop(context); // Close the popup
-  widget.receipt.transactionTime = DateFormat('dd MMM yyyy HH:mm').format(DateTime.now());
   // Convert receipt to JSON
   final receiptJson = receiptToJson(widget.receipt);
 

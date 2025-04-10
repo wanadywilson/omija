@@ -5,9 +5,8 @@ import 'show_pin.dart';
 
 class SummaryReceiptDetailsAmountScreen extends StatelessWidget {
   final Receipt receipt;
-  final String splitMethod; // "Percentage", "Equal", or "Exact"
 
-  SummaryReceiptDetailsAmountScreen({required this.receipt, required this.splitMethod});
+  SummaryReceiptDetailsAmountScreen({required this.receipt});
 
   String _format(double value) => NumberFormat("#,###").format(value);
 
@@ -28,7 +27,7 @@ class SummaryReceiptDetailsAmountScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Split by $splitMethod", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+            Text("Split by ${receipt.method}", style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
             SizedBox(height: 10),
 
             // 📄 Receipt card
@@ -69,7 +68,7 @@ class SummaryReceiptDetailsAmountScreen extends StatelessWidget {
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: [
-                              if (splitMethod == "Percentage")
+                              if (receipt.method == "Percentage")
                                 Text("${p.percentage.toStringAsFixed(2)}%", style: TextStyle(fontSize: 12)),
                               Text("Rp${_format(p.amount)}", style: TextStyle(fontWeight: FontWeight.bold)),
                             ],

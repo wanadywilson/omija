@@ -257,7 +257,6 @@ String _format(double value) => NumberFormat("#,###").format(value);
     MaterialPageRoute(
       builder: (context) => SummaryReceiptDetailsAmountScreen(
         receipt: widget.receipt,
-        splitMethod: selectedMethod,
       ),
     ),
   );
