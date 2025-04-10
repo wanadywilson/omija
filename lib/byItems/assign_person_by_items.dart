@@ -16,22 +16,23 @@ class AssignPersonByItemsManualScreen extends StatefulWidget {
 class _AssignPersonByItemsManualScreenState
     extends State<AssignPersonByItemsManualScreen> {
   int? selectedPersonIndex;
-  Map<String, List<int>> assignedItems = {};
+  Map<int, List<int>> assignedItems = {}; // key is item index
+
 
   void _assignItem(int itemIndex) {
-    if (selectedPersonIndex == null) return;
+  if (selectedPersonIndex == null) return;
 
-    setState(() {
-      String itemName = widget.receipt.items[itemIndex].name;
-      assignedItems[itemName] ??= [];
+  setState(() {
+    assignedItems[itemIndex] ??= [];
 
-      if (!assignedItems[itemName]!.contains(selectedPersonIndex)) {
-        assignedItems[itemName]!.add(selectedPersonIndex!);
-      } else {
-        assignedItems[itemName]!.remove(selectedPersonIndex);
-      }
-    });
-  }
+    if (!assignedItems[itemIndex]!.contains(selectedPersonIndex)) {
+      assignedItems[itemIndex]!.add(selectedPersonIndex!);
+    } else {
+      assignedItems[itemIndex]!.remove(selectedPersonIndex);
+    }
+  });
+}
+
 
   void _selectPerson(int index) {
     setState(() {
@@ -108,14 +109,15 @@ class _AssignPersonByItemsManualScreenState
                               ),
                               if (selectedPersonIndex != null)
                                 Icon(
-                                  assignedItems[item.name]?.contains(selectedPersonIndex) == true
-                                      ? Icons.check_circle
-                                      : Icons.circle_outlined,
-                                  color: assignedItems[item.name]?.contains(selectedPersonIndex) == true
-                                      ? Colors.green
-                                      : Colors.grey,
-                                  size: 20,
-                                ),
+  assignedItems[index]?.contains(selectedPersonIndex) == true
+      ? Icons.check_circle
+      : Icons.circle_outlined,
+  color: assignedItems[index]?.contains(selectedPersonIndex) == true
+      ? Colors.green
+      : Colors.grey,
+  size: 20,
+)
+
                             ],
                           ),
 
@@ -140,23 +142,22 @@ class _AssignPersonByItemsManualScreenState
                             style: TextStyle(fontSize: 12, color: Colors.black54),
                           ),
                           Row(
-                            children: assignedItems[item.name]
-                                    ?.map((personIndex) {
-                                  final p = widget.receipt.people[personIndex];
-                                  return Padding(
-                                    padding: EdgeInsets.only(right: 8),
-                                    child: CircleAvatar(
-                                      backgroundColor: p.avatarColor,
-                                      radius: 12,
-                                      child: Text(
-                                        p.name[0].toUpperCase(),
-                                        style: TextStyle(
-                                            color: Colors.white, fontSize: 12),
-                                      ),
-                                    ),
-                                  );
-                                }).toList() ??
-                                [],
+                            children: assignedItems[index]
+    ?.map((personIndex) {
+      final p = widget.receipt.people[personIndex];
+      return Padding(
+        padding: EdgeInsets.only(right: 8),
+        child: CircleAvatar(
+          backgroundColor: p.avatarColor,
+          radius: 12,
+          child: Text(
+            p.name[0].toUpperCase(),
+            style: TextStyle(color: Colors.white, fontSize: 12),
+          ),
+        ),
+      );
+    }).toList() ?? [],
+
                           ),
                         ],
                       ),
@@ -184,8 +185,10 @@ class _AssignPersonByItemsManualScreenState
   Map<int, double> personSubtotals = {};
 
   // Assign items and calculate subtotal per person
-  for (var item in widget.receipt.items) {
-    final assignees = assignedItems[item.name] ?? [];
+  for (int i = 0; i < widget.receipt.items.length; i++) {
+  final item = widget.receipt.items[i];
+  final assignees = assignedItems[i] ?? [];
+
     if (assignees.isEmpty) continue;
 
     final share = item.totalPrice / assignees.length;
