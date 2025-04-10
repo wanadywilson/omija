@@ -4,6 +4,7 @@ import '../models.dart';
 import 'show_pin.dart';
 
 
+
 class SplitSummaryScreen extends StatelessWidget {
   final Receipt receipt;
 
