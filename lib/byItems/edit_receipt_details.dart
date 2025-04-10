@@ -376,6 +376,7 @@ void initState() {
                       serviceChargePercentage: widget.initialReceipt.serviceChargePercentage,
                       people: _people,
                       items: widget.initialReceipt.items,
+                      method: widget.initialReceipt.method,
                     ),
                   ),
                 ),

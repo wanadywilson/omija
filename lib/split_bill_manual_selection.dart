@@ -64,7 +64,8 @@ class SplitBillSelectionScreen extends StatelessWidget {
                       tax: 0,
                       taxPercentage: 0,
                       subTotal: 0,
-                      people: [Person(name: longName, phone: phoneNumber, verified: true)]
+                      people: [Person(name: longName, phone: phoneNumber, verified: true)],
+                      method: "",
                       
                       ),
                     ),

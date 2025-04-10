@@ -40,6 +40,7 @@ Future<Receipt> parseReceiptFromOcrResponse(Map<String, dynamic> ocrJson) async 
     grandTotal: grandTotal,
     people: [Person(name: 'Me')],
     items: items,
+    method: "OCR",
   );
 }
 
