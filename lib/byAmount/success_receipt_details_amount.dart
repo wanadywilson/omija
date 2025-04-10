@@ -16,9 +16,8 @@ ScreenshotController screenshotController = ScreenshotController();
 
 class SuccessReceiptScreen extends StatefulWidget {
   final Receipt receipt;
-  final String method;
 
-  SuccessReceiptScreen({required this.receipt, required this.method});
+  SuccessReceiptScreen({required this.receipt});
 
   @override
   State<SuccessReceiptScreen> createState() => _SuccessReceiptScreenState();
@@ -149,7 +148,7 @@ class _SuccessReceiptScreenState extends State<SuccessReceiptScreen> with Single
             Image.asset("images/logo_omo.jpg", scale: 2), // Replace with your logo path
 
             SizedBox(height: 20),
-            Text("Split Bill by ${widget.method}", style: TextStyle(fontWeight: FontWeight.bold)),
+            Text("Split Bill by ${widget.receipt.method}", style: TextStyle(fontWeight: FontWeight.bold)),
             SizedBox(height: 8),
             Text(widget.receipt.title, style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
 
@@ -163,7 +162,7 @@ class _SuccessReceiptScreenState extends State<SuccessReceiptScreen> with Single
             ...widget.receipt.people.map((p) => _buildDetailRow(
               p.name,
               "Rp${NumberFormat("#,###").format(p.amount)}",
-              subtitle: widget.method == "Percentage" ? "${p.percentage.toStringAsFixed(2)}%" : null,
+              subtitle: widget.receipt.method == "Percentage" ? "${p.percentage.toStringAsFixed(2)}%" : null,
             )),
 
             Divider(height: 30, color: Colors.grey),
@@ -243,7 +242,7 @@ class _SuccessReceiptScreenState extends State<SuccessReceiptScreen> with Single
                         context,
                         MaterialPageRoute(
                           builder: (context) => QRPersonDetailScreen(
-                            method: widget.method,
+                            method: widget.receipt.method,
                             receiptDate: widget.receipt.date,
                             personName: person.name,
                             amount: person.amount,

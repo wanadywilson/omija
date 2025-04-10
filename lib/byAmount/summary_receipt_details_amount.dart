@@ -108,7 +108,6 @@ class SummaryReceiptDetailsAmountScreen extends StatelessWidget {
                   ),
                   builder: (context) => PinConfirmationPop(
                     receipt: receipt,
-                    splitMethod: splitMethod,
                   ),
                 );
                   // Trigger split logic or go to next screen

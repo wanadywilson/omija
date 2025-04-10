@@ -80,7 +80,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
 
   try {
     final response = await http.post(
-      Uri.parse('https://your-api-url.com/split'), // 🔁 Replace with real URL
+      Uri.parse('http://141.11.241.147:8080/splitbill/'), // 🔁 Replace with real URL
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(receiptJson),
     );

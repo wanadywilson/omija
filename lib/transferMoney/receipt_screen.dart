@@ -34,27 +34,25 @@ class ReceiptScreen extends StatelessWidget {
           children: [
             // Close Button
             // Close Button
-GestureDetector(
-  onTap: () {
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => HomeScreen(cameras: cameras)),
-      (Route<dynamic> route) => false,
-    );
-  },
-  child: Row(
-    children: [
-      Icon(Icons.close, color: Colors.white),
-      SizedBox(width: 5),
-      Text(
-        "Close",
-        style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+      GestureDetector(
+        onTap: () {
+          Navigator.pushAndRemoveUntil(
+            context,
+            MaterialPageRoute(builder: (context) => HomeScreen(cameras: cameras)),
+            (Route<dynamic> route) => false,
+          );
+        },
+        child: Row(
+          children: [
+            Icon(Icons.close, color: Colors.white),
+            SizedBox(width: 5),
+            Text(
+              "Close",
+              style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
       ),
-    ],
-  ),
-),
-
-
             // Share Button
             GestureDetector(
               onTap: () {
@@ -74,7 +72,7 @@ GestureDetector(
           ],
         ),
       ),
-      body: Column(
+      body: SafeArea(child: Column(
         children: [
           Expanded(
             child: Container(
@@ -100,165 +98,163 @@ GestureDetector(
                   Text("IDR ${amount}", style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold)),
 
                   SizedBox(height: 10),
-                  // Transfer To (Left: Label, Right: Recipient Name & Number)
-// Transfer To (Left: Label, Right: Name & Phone)
-Padding(
-  padding: const EdgeInsets.symmetric(vertical: 8),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.spaceBetween, // Aligns to opposite ends
-    crossAxisAlignment: CrossAxisAlignment.start,
-    children: [
-      Text(
-        "Transfer to",
-        style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
-      ),
-      Column(
-        crossAxisAlignment: CrossAxisAlignment.end, // Align name & number to the right
-        children: [
-          Text(
-            'JEXXXXX SAXXXXX', // Pass actual recipient's name (JEXXX)
-            style: TextStyle(fontSize: 16),
-          ),
-          SizedBox(height:7),
-          Text(
-            phoneNumber, // Pass actual phone number (135000)
-            style: TextStyle(fontSize: 14, color: Colors.black),
-          ),
-        ],
-      ),
-    ],
-  ),
-),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween, // Aligns to opposite ends
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "Transfer to",
+                          style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.end, // Align name & number to the right
+                          children: [
+                            Text(
+                              'JEXXXXX SAXXXXX', // Pass actual recipient's name (JEXXX)
+                              style: TextStyle(fontSize: 16),
+                            ),
+                            SizedBox(height:7),
+                            Text(
+                              phoneNumber, // Pass actual phone number (135000)
+                              style: TextStyle(fontSize: 14, color: Colors.black),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
 
 
 
                   SizedBox(height: 10),
                  // Add to Favorites Button (Aligned Right)
 // Add to Favorites Button (Aligned Right, Icon After Text)
-Padding(
-  padding: const EdgeInsets.symmetric(vertical: 8),
-  child: Row(
-    mainAxisAlignment: MainAxisAlignment.end, // Align button to the right
-    children: [
-      ElevatedButton(
-        onPressed: () {
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 194, 30, 30),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min, // Prevents button from stretching
-          children: [
-            Text("Add to Favorites", style: TextStyle(color: Colors.white)),
-            SizedBox(width: 6), // Spacing between text and icon
-            Icon(Icons.favorite, color: Colors.white),
-          ],
-        ),
-      ),
-    ],
-  ),
-),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end, // Align button to the right
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color.fromARGB(255, 194, 30, 30),
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min, // Prevents button from stretching
+                            children: [
+                              Text("Add to Favorites", style: TextStyle(color: Colors.white)),
+                              SizedBox(width: 6), // Spacing between text and icon
+                              Icon(Icons.favorite, color: Colors.white),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
 
 
                   // Transaction Details Row
 // Transaction Details Section
 // Transaction Details Section
-Column(
-  crossAxisAlignment: CrossAxisAlignment.start,
-  children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
 
-    // Transaction Time & Transaction ID in Row
-    Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Transaction Time",
-                style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 4),
-              Text(
-                formattedTime, // Example: "03 Mar 2025 23:36"
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.end,
-            children: [
-              Text(
-                "Transaction ID",
-                style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              SizedBox(height: 4),
-              Text(
-                transactionId, // Example: "TXN174019769747"
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
+                    // Transaction Time & Transaction ID in Row
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Transaction Time",
+                                style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                formattedTime, // Example: "03 Mar 2025 23:36"
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              Text(
+                                "Transaction ID",
+                                style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+                              ),
+                              SizedBox(height: 4),
+                              Text(
+                                transactionId, // Example: "TXN174019769747"
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
 
-    // Transfer From Section
-    Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Transfer from",
-            style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 4),
-          Text(
-            longName, // Example: "OCTO Savers (••••5891)"
-            style: TextStyle(fontSize: 14),
-          ),
-        ],
-      ),
-    ),
+                    // Transfer From Section
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Transfer from",
+                            style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            longName, // Example: "OCTO Savers (••••5891)"
+                            style: TextStyle(fontSize: 14),
+                          ),
+                        ],
+                      ),
+                    ),
 
-    // Message Section (Moved Below)
-    Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            "Messages",
-            style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
-          ),
-          SizedBox(height: 4),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Text(
-                message, // Example: "MB174019769747"
-                style: TextStyle(fontSize: 14),
-              ),
-            ],
-          ),
-        ],
-      ),
-    ),
-  ],
-),
-                  
-                ],
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
+                    // Message Section (Moved Below)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Messages",
+                            style: TextStyle(color: Colors.grey, fontSize: 14, fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(height: 4),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                message, // Example: "MB174019769747"
+                                style: TextStyle(fontSize: 14),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+                                  
+                                ],
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ));
+                  }
 
  
 }
