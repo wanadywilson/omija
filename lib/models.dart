@@ -38,6 +38,7 @@ class Receipt {
   double serviceChargePercentage;
   double taxPercentage;
   List<Item> items;
+  String method;
   
 
   Receipt({
@@ -51,6 +52,7 @@ class Receipt {
     required this.tax,
     required this.taxPercentage,
     required this.subTotal,
+    required this.method,
     
   }): items = items ?? [];
 }
