@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import 'package:octo_split/byAmount/summary_receipt_details_amount.dart';
 import '../models.dart'; // Ensure this contains Receipt and Person classes
@@ -226,12 +227,12 @@ String _format(double value) => NumberFormat("#,###").format(value);
           onPressed: () {
   final selectedMethodIndex = _tabController.index;
   final selectedMethod = ["Percentage", "Equal", "Exact"][selectedMethodIndex];
-
+  widget.receipt.method = selectedMethod;
   // ⬇️ Force equal amount calculation before navigating
   if (selectedMethod == "Equal") {
     double total = double.tryParse(widget.receipt.grandTotal.toString().replaceAll(',', '')) ?? 0;
     double perPerson = widget.receipt.people.isNotEmpty ? total / widget.receipt.people.length : 0;
-
+    
     for (var person in widget.receipt.people) {
       person.amount = perPerson;
       person.percentage = 0;
@@ -247,6 +248,7 @@ String _format(double value) => NumberFormat("#,###").format(value);
       widget.receipt.people[i].amount = parsed;
     }
   }
+
 }
 
 
@@ -318,13 +320,16 @@ String _format(double value) => NumberFormat("#,###").format(value);
               trailing: SizedBox(
                 width: 80,
                 child: TextField(
-                  controller: controller,
-                  keyboardType: TextInputType.numberWithOptions(decimal: true),
-                  decoration: InputDecoration(
-                    suffixText: "%",
-                    hintText: "0",
-                  ),
-                ),
+  controller: controller,
+  keyboardType: TextInputType.numberWithOptions(decimal: true),
+  inputFormatters: [
+    FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}$')),
+  ],
+  decoration: InputDecoration(
+    suffixText: "%",
+    hintText: "0",
+  ),
+),
               ),
             );
           },
@@ -411,6 +416,7 @@ String _format(double value) => NumberFormat("#,###").format(value);
                   controller: controller,
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(hintText: "0"),
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   onChanged: (val) {
                     String raw = val.replaceAll(',', '');
                     int? parsed = int.tryParse(raw);

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 import '../models.dart';
 import 'review_items.dart';
@@ -217,6 +218,7 @@ Widget _buildReceiptInfo() {
               Expanded(
                 child: TextField(
                   controller: item.singlePriceController,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: "Single Price"),
                 ),
@@ -227,6 +229,7 @@ Widget _buildReceiptInfo() {
                 child: TextField(
                   controller: item.quantityController,
                   keyboardType: TextInputType.number,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   decoration: InputDecoration(labelText: "Qty"),
                   onChanged: (val) {
                     final qty = int.tryParse(val) ?? 1;
@@ -241,6 +244,7 @@ Widget _buildReceiptInfo() {
               Expanded(
                 child: TextField(
                   controller: item.totalPriceController,
+                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
                   keyboardType: TextInputType.number,
                   decoration: InputDecoration(labelText: "Total Price"),
                 ),

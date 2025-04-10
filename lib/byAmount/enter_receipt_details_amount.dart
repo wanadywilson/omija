@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_native_contact_picker/model/contact.dart';
 import 'package:intl/intl.dart';
 import 'split_bill_method.dart'; // Your next screen
@@ -367,7 +368,40 @@ Color _getColorForPerson(int index) {
                       ),
                     ),
                     SizedBox(height: 15),
-                    _inputField("Amount", "Enter total amount", _amountController, true, showIcon: false),
+
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Amount", style: TextStyle(color: Colors.grey, fontSize: 16, fontWeight: FontWeight.bold)),
+                        SizedBox(height: 5),
+                        Container(
+                          height: 60,
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+                          ),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                child: TextField(
+                                  controller: _amountController,
+                                  keyboardType: TextInputType.number,
+                                  readOnly: false,
+                                  inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+                                  decoration: InputDecoration(
+                                    border: InputBorder.none,
+                                    hintText: "Enter total amount",
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+
                     SizedBox(height: 15),
                     _buildPeopleSection(),
                   ],
@@ -395,6 +429,7 @@ Color _getColorForPerson(int index) {
                       tax: 0,
                       taxPercentage: 0,
                       subTotal: 0,
+                      method: "",
                     ),
                   ),
                 ),
