@@ -1,19 +1,22 @@
+
 import 'package:flutter/material.dart';
-import '../models.dart'; // Receipt and Person
+import '../models.dart';
 import 'success_receipt_details_amount.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+
 
 class PinConfirmationPop extends StatefulWidget {
   final Receipt receipt;
-  final String splitMethod;
 
-  PinConfirmationPop({required this.receipt, required this.splitMethod});
+  const PinConfirmationPop({required this.receipt});
 
   @override
   _PinConfirmationPopupState createState() => _PinConfirmationPopupState();
 }
 
 class _PinConfirmationPopupState extends State<PinConfirmationPop> {
-  List<String> enteredPin = ["", ""];
+  List<String> enteredPin = ["", ""]; // Stores only the 1st and 6th digits
   int pinIndex = 0;
 
   void _addDigit(String digit) {
@@ -34,22 +37,81 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
     }
   }
 
-  void _confirmPin() {
-    // Simulate confirming transaction
-    Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (_) => SuccessReceiptScreen(receipt: widget.receipt, method: widget.splitMethod),
-  ),
-);
- // Close the popup
+  Map<String, dynamic> receiptToJson(Receipt receipt) {
+  return {
+    "title": receipt.title,
+    "date": receipt.date,
+    "grandTotal": receipt.grandTotal,
+    "subTotal": receipt.subTotal,
+    "serviceCharge": receipt.serviceCharge,
+    "tax": receipt.tax,
+    "serviceChargePercentage": receipt.serviceChargePercentage,
+    "taxPercentage": receipt.taxPercentage,
+    "method": receipt.method,
+    "people": receipt.people.map((p) => {
+      "name": p.name,
+      "phone": p.phone,
+      "amount": p.amount,
+      "percentage": p.percentage,
+      "tax": p.tax,
+      "serviceCharge": p.serviceCharge,
+      "items": p.items.map((item) => {
+        "name": item.name,
+        "quantity": item.quantity,
+        "singlePrice": item.singlePrice,
+        "totalPrice": item.totalPrice,
+      }).toList()
+    }).toList(),
+    "items": receipt.items.map((item) => {
+      "name": item.name,
+      "quantity": item.quantity,
+      "singlePrice": item.singlePrice,
+      "totalPrice": item.totalPrice,
+    }).toList(),
+  };
+}
+
+
+  void _confirmPin() async {
+  Navigator.pop(context); // Close the popup
+
+  // Convert receipt to JSON
+  final receiptJson = receiptToJson(widget.receipt);
+
+  try {
+    final response = await http.post(
+      Uri.parse('http://141.11.241.147:8080/splitbill/'), // 🔁 Replace with real URL
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode(receiptJson),
+    );
+
+    if (response.statusCode == 200 || response.statusCode == 201) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (_) => SuccessReceiptScreen(receipt: widget.receipt),
+        ),
+      );
+    } else {
+      throw Exception("Failed to send receipt: ${response.statusCode}");
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text("Error sending receipt: $e")),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
       height: 600,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
       child: Column(
         children: [
           // Close Button
@@ -71,12 +133,13 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
           ),
           SizedBox(height: 20),
 
-          // Dots
+          // PIN dots
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: List.generate(6, (index) {
               bool isFirstOrLast = index == 0 || index == 5;
               int pinPos = index == 0 ? 0 : (index == 5 ? 1 : -1);
+
               return Padding(
                 padding: EdgeInsets.symmetric(horizontal: 10),
                 child: Container(
@@ -117,6 +180,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
                     onPressed: _removeDigit,
                   );
                 }
+
                 String digit = index == 10 ? "0" : (index + 1).toString();
                 return GestureDetector(
                   onTap: () => _addDigit(digit),
