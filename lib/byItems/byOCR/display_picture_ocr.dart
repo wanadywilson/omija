@@ -30,6 +30,7 @@ Future<Receipt> parseReceiptFromOcrResponse(Map<String, dynamic> ocrJson) async 
   final double grandTotal = subTotal + tax;
 
   return Receipt(
+    transactionTime: "",
     title: data['place_name'] ?? "Unknown",
     date: data['invoice_date'] ?? "",
     tax: tax,
