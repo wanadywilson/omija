@@ -31,6 +31,8 @@ class SummaryReceiptDetailsAmountScreen extends StatelessWidget {
             SizedBox(height: 10),
 
             // 📄 Receipt card
+
+            
             Card(
               color: Color(0xFFF6F6F6),
               elevation: 2,
