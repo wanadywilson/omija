@@ -283,11 +283,14 @@ Widget _buildReceiptInfo() {
   Widget _buildTaxField(String label, TextEditingController percent, TextEditingController amount) {
   return Row(
     children: [
-      // % input
+      // Percentage input (allows decimal)
       Expanded(
         child: TextField(
           controller: percent,
-          keyboardType: TextInputType.number,
+          keyboardType: TextInputType.numberWithOptions(decimal: true),
+          inputFormatters: [
+            FilteringTextInputFormatter.allow(RegExp(r'^\d*\.?\d{0,2}')), // allow decimals
+          ],
           decoration: InputDecoration(labelText: "$label %"),
           onChanged: (_) {
             if (label == "Tax") {
@@ -300,11 +303,12 @@ Widget _buildReceiptInfo() {
       ),
       SizedBox(width: 10),
 
-      // amount input
+      // Amount input (digits only)
       Expanded(
         child: TextField(
           controller: amount,
           keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           decoration: InputDecoration(labelText: "$label Amount"),
           onChanged: (_) {
             if (label == "Tax") {
@@ -318,6 +322,7 @@ Widget _buildReceiptInfo() {
     ],
   );
 }
+
 
 
   Widget _buildGrandTotal() {
