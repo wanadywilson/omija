@@ -59,6 +59,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
       "name": p.name,
       "phone": p.phone,
       "amount": p.amount,
+      "username":p.username,
       "percentage": p.percentage,
       "tax": p.tax,
       "serviceCharge": p.serviceCharge,

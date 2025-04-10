@@ -55,6 +55,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
     "people": receipt.people.map((p) => {
       "name": p.name,
       "phone": p.phone,
+      "username": p.username,
       "amount": p.amount,
       "percentage": p.percentage,
       "tax": p.tax,

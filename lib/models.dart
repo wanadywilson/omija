@@ -10,6 +10,7 @@ class Person {
   bool verified;
   List<Item> items;
   Color? avatarColor;
+  String? username;
 
   Person({
     required this.name,
@@ -21,6 +22,7 @@ class Person {
     this.verified = false,
     this.avatarColor,
     List<Item>? items,
+    this.username,
   }) : items = items ?? [];
 }
 

@@ -19,6 +19,7 @@ class EditReceiptDetailsScreen extends StatefulWidget {
 class _EditReceiptDetailsScreenState extends State<EditReceiptDetailsScreen> {
 
   bool isButtonEnabled = false;
+    String? matchedUsername;
 
   List<Person> _people = [];
 late TextEditingController _titleController;
@@ -90,12 +91,14 @@ void initState() {
       orElse: () => {},
     );
 
-    if (match.isNotEmpty) {
-      nameController.text = match['long_name'];
-      isVerified = true;
-    } else {
-      isVerified = false;
-    }
+if (match.isNotEmpty) {
+  nameController.text = match['long_name'];
+  matchedUsername = match['username'];
+  isVerified = true;
+} else {
+  isVerified = false;
+}
+
     setState(() {}); // trigger rebuild to show tick
   }
 
@@ -160,11 +163,13 @@ void initState() {
   if (nameController.text.trim().isNotEmpty) {
     setState(() {
       _people.add(Person(
-        name: nameController.text.trim(),
-        phone: phoneController.text.trim(),
-        verified: isVerified,
-        avatarColor: _getColorForPerson(_people.length), // 👈 assign color based on index
-      ));
+  name: nameController.text.trim(),
+  phone: phoneController.text.trim(),
+  verified: isVerified,
+  avatarColor: _getColorForPerson(_people.length),
+  username: matchedUsername,
+));
+
     });
     Navigator.pop(context);
   }
