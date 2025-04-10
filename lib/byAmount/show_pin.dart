@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:octo_split/globals.dart';
 import '../models.dart';
 import 'success_receipt_details_amount.dart';
 import 'dart:convert';
@@ -83,7 +84,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
 
   try {
     final response = await http.post(
-      Uri.parse('http://141.11.241.147:8080/splitbill/'), // 🔁 Replace with real URL
+      Uri.parse(urlKirimReceipt), // 🔁 Replace with real URL
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(receiptJson),
     );

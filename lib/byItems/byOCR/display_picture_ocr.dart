@@ -2,11 +2,11 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:octo_split/globals.dart';
 import '../edit_receipt_details.dart';
 import '../../models.dart';
 
 // API URLs
-const uploadImageUrl = 'http://141.11.241.147:8080/process-ocr/'; // <-- Ganti sesuai URL API kamu
 
 Future<Receipt> parseReceiptFromOcrResponse(Map<String, dynamic> ocrJson) async {
   final data = ocrJson['ocr_result']; // <-- ambil bagian dalam 'ocr_result'
@@ -56,7 +56,7 @@ class DisplayPictureScreen extends StatelessWidget {
     final base64Image = base64Encode(bytes);
 
     final response = await http.post(
-      Uri.parse(uploadImageUrl),
+      Uri.parse(urlKirimFotoOcr),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'image_base64': base64Image}),
     );
