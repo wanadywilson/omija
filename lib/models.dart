@@ -29,6 +29,7 @@ class Person {
 
 class Receipt {
   final String title;
+  String transactionTime;
   final String date;
   double grandTotal;
   List<Person> people;
@@ -53,6 +54,7 @@ class Receipt {
     required this.taxPercentage,
     required this.subTotal,
     required this.method,
+    required this.transactionTime
     
   }): items = items ?? [];
 }

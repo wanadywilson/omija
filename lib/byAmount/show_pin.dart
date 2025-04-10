@@ -1,5 +1,6 @@
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models.dart';
 import 'success_receipt_details_amount.dart';
 import 'dart:convert';
@@ -18,6 +19,7 @@ class PinConfirmationPop extends StatefulWidget {
 class _PinConfirmationPopupState extends State<PinConfirmationPop> {
   List<String> enteredPin = ["", ""]; // Stores only the 1st and 6th digits
   int pinIndex = 0;
+  
 
   void _addDigit(String digit) {
     if (pinIndex < 2) {
@@ -41,6 +43,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
   return {
     "title": receipt.title,
     "date": receipt.date,
+    "transactionTime": receipt.transactionTime,
     "grandTotal": receipt.grandTotal,
     "subTotal": receipt.subTotal,
     "serviceCharge": receipt.serviceCharge,
@@ -74,7 +77,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
 
   void _confirmPin() async {
   Navigator.pop(context); // Close the popup
-
+  widget.receipt.transactionTime = DateFormat('dd MMM yyyy HH:mm').format(DateTime.now());
   // Convert receipt to JSON
   final receiptJson = receiptToJson(widget.receipt);
 

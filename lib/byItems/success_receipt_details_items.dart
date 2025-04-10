@@ -35,7 +35,6 @@ void initState() {
   @override
   Widget build(BuildContext context) {
     double grandTotal = widget.receipt.people.fold(0.0, (sum, p) => sum + p.amount);
-    String transactionTime = DateFormat('dd MMM yyyy HH:mm').format(DateTime.now());
 
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 94, 19, 16),
@@ -89,7 +88,7 @@ void initState() {
   child: TabBarView(
     controller: _tabController,
     children: [
-      _buildSummaryTab(transactionTime, grandTotal),
+      _buildSummaryTab(widget.receipt.transactionTime, grandTotal),
       _buildPeopleTab(),
       _buildReceiptTab(),
     ],
@@ -227,7 +226,7 @@ Widget _buildReceiptTab() {
             SizedBox(height: 20),
 
             _buildDetailRow("Receipt Date", widget.receipt.date),
-            _buildDetailRow("Transaction Time", transactionTime),
+            _buildDetailRow("Transaction Time", widget.receipt.transactionTime),
 
             Divider(height: 30, color: Colors.grey),
 

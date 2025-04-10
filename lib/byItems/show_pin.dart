@@ -1,10 +1,11 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import '../models.dart';
 import 'success_receipt_details_items.dart';
-import '../globals.dart';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
+
 
 class PinConfirmationPop extends StatefulWidget {
   final Receipt receipt;
@@ -40,14 +41,15 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
   Map<String, dynamic> receiptToJson(Receipt receipt) {
   return {
     "title": receipt.title,
+    "transactionTime": receipt.transactionTime,
     "date": receipt.date,
-    "creator": username,
     "grandTotal": receipt.grandTotal,
     "subTotal": receipt.subTotal,
     "serviceCharge": receipt.serviceCharge,
     "tax": receipt.tax,
     "serviceChargePercentage": receipt.serviceChargePercentage,
     "taxPercentage": receipt.taxPercentage,
+    "method": receipt.method,
     "people": receipt.people.map((p) => {
       "name": p.name,
       "phone": p.phone,
@@ -71,27 +73,18 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
   };
 }
 
- void _confirmPin() {
-    // Simulate confirming transaction
-    Navigator.pushReplacement(
-  context,
-  MaterialPageRoute(
-    builder: (_) => SuccessReceiptScreen(receipt: widget.receipt),
-  ),
-);
- // Close the popup
-  }
 
-/*
   void _confirmPin() async {
   Navigator.pop(context); // Close the popup
 
+    
+  widget.receipt.transactionTime = DateFormat('dd MMM yyyy HH:mm').format(DateTime.now());
   // Convert receipt to JSON
   final receiptJson = receiptToJson(widget.receipt);
 
   try {
     final response = await http.post(
-      Uri.parse('https://your-api-url.com/split'), // 🔁 Replace with real URL
+      Uri.parse('http://141.11.241.147:8080/splitbill/'), // 🔁 Replace with real URL
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode(receiptJson),
     );
@@ -112,7 +105,6 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
     );
   }
 }
-*/
 
 
   @override
@@ -124,7 +116,7 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
         color: Colors.white,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-      child: SafeArea(child: Column(
+      child: Column(
         children: [
           // Close Button
           Align(
@@ -210,32 +202,24 @@ class _PinConfirmationPopupState extends State<PinConfirmationPop> {
           ),
 
           // Confirm Button
-          // Confirm Button + bottom padding
-Column(
-  mainAxisSize: MainAxisSize.min,
-  children: [
-    SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: (enteredPin[0].isNotEmpty && enteredPin[1].isNotEmpty)
-            ? _confirmPin
-            : null,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Color.fromARGB(255, 94, 19, 16),
-          padding: EdgeInsets.symmetric(vertical: 18),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              onPressed: (enteredPin[0].isNotEmpty && enteredPin[1].isNotEmpty)
+                  ? _confirmPin
+                  : null,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Color.fromARGB(255, 94, 19, 16),
+                padding: EdgeInsets.symmetric(vertical: 18),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+              ),
+              child: Text("Confirm", style: TextStyle(fontSize: 18, color: Colors.white)),
+            ),
           ),
-        ),
-        child: Text("Confirm", style: TextStyle(fontSize: 18, color: Colors.white)),
-      ),
-    ),
-    SizedBox(height: 16), // ⬅️ Add space between Confirm button and bottom
-  ],
-),
-
         ],
       ),
-    ));
+    );
   }
 }
