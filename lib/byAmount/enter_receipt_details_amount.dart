@@ -420,6 +420,7 @@ Color _getColorForPerson(int index) {
                 MaterialPageRoute(
                   builder: (context) => ConfirmReceiptDetailsAmountScreen(
                     receipt: Receipt(
+                      transactionTime: "",
                       title: _titleController.text.trim(),
                       date: _dateController.text.trim(),
                       grandTotal: double.parse(_amountController.text.trim().replaceAll(',', '')),

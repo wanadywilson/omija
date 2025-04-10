@@ -366,6 +366,7 @@ void initState() {
                 MaterialPageRoute(
                   builder: (context) => EditItemsScreen(
                     receipt: Receipt(
+                      transactionTime: "",
                       title: _titleController.text.trim(),
                       date: _dateController.text.trim(),
                       subTotal: widget.initialReceipt.subTotal,
