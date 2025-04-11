@@ -172,13 +172,15 @@ void initState() {
 
   return GestureDetector(
     onTap: () {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (_) => HistoryDetailScreen(receipt: receipt),
-        ),
-      );
-    },
+  Navigator.push(
+  context,
+  MaterialPageRoute(
+    builder: (_) => HistoryDetailScreen(receipt: receipt),
+  ),
+);
+
+},
+
     child: Card(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       elevation: 4,

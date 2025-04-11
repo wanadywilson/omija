@@ -7,5 +7,5 @@ String phoneNumber = '';
 
 String urlKirimFotoOcr = 'http://141.11.241.147:8080/process-ocr/';
 String urlKirimReceipt = 'http://141.11.241.147:8080/splitbill/';
-String urlGetHistoryByMe = 'http://141.11.241.147:8080/splitbill/creator/';
-String urlGetHistoryForMe = 'http://141.11.241.147:8080/splitbill/related/';
+String urlGetHistoryByMe = 'http://141.11.241.147:8080/history/creator/';
+String urlGetHistoryForMe = 'http://141.11.241.147:8080/history/participants/';

@@ -26,16 +26,18 @@ class Person {
   }) : items = items ?? [];
 
   factory Person.fromJson(Map<String, dynamic> json) {
-    return Person(
-      name: json['name'],
-      phone: json['phone'],
-      amount: (json['amount'] as num).toDouble(),
-      percentage: (json['percentage'] as num).toDouble(),
-      tax: (json['tax'] as num).toDouble(),
-      serviceCharge: (json['serviceCharge'] as num).toDouble(),
-      username: json['username'],
-    );
-  }
+  return Person(
+    name: json['name'],
+    phone: json['phone'],
+    amount: (json['amount'] as num).toDouble(),
+    percentage: (json['percentage'] as num).toDouble(),
+    tax: (json['tax'] as num).toDouble(),
+    serviceCharge: (json['serviceCharge'] as num).toDouble(),
+    username: json['username'],
+    items: (json['items'] as List?)?.map((item) => Item.fromMap(item)).toList() ?? [],
+  );
+}
+
 
 
 
@@ -75,21 +77,23 @@ class Receipt {
     
   }): items = items ?? [];
 
-  factory Receipt.fromJson(Map<String, dynamic> json) {
-    return Receipt(
-      title: json['title'],
-      date: json['date'],
-      grandTotal: (json['grandTotal'] as num).toDouble(),
-      subTotal: (json['subTotal'] as num).toDouble(),
-      serviceCharge: (json['serviceCharge'] as num).toDouble(),
-      tax: (json['tax'] as num).toDouble(),
-      serviceChargePercentage: (json['serviceChargePercentage'] as num).toDouble(),
-      taxPercentage: (json['taxPercentage'] as num).toDouble(),
-      method: json['method'],
-      transactionTime: json['transactionTime'],
-      people: (json['people'] as List).map((p) => Person.fromJson(p)).toList(),
-    );
-  }
+ factory Receipt.fromJson(Map<String, dynamic> json) {
+  return Receipt(
+    title: json['receipt']['title'],
+    date: json['receipt']['date'],
+    grandTotal: (json['receipt']['grandTotal'] as num).toDouble(),
+    subTotal: (json['receipt']['subTotal'] as num).toDouble(),
+    serviceCharge: (json['receipt']['serviceCharge'] as num).toDouble(),
+    tax: (json['receipt']['tax'] as num).toDouble(),
+    serviceChargePercentage: (json['receipt']['serviceChargePercentage'] as num).toDouble(),
+    taxPercentage: (json['receipt']['taxPercentage'] as num).toDouble(),
+    method: json['receipt']['method'],
+    transactionTime: json['receipt']['transactionTime'],
+    people: (json['people'] as List).map((p) => Person.fromJson(p)).toList(),
+    items: (json['items'] as List?)?.map((item) => Item.fromMap(item)).toList() ?? [],
+  );
+}
+
 
 
 }
@@ -110,6 +114,22 @@ class Item {
         singlePriceController = TextEditingController(text: singlePrice.toStringAsFixed(0)),
         quantityController = TextEditingController(text: quantity.toString()),
         totalPriceController = TextEditingController(text: totalPrice.toStringAsFixed(0));
+
+  factory Item.fromMap(Map<String, dynamic> map) {
+    return Item(
+      name: map['name'],
+      singlePrice: (map['singlePrice'] as num).toDouble(),
+      quantity: map['quantity'],
+      totalPrice: (map['totalPrice'] as num).toDouble(),
+    );
+  }
+
+  Map<String, dynamic> toJson() => {
+    'name': name,
+    'singlePrice': singlePrice,
+    'quantity': quantity,
+    'totalPrice': totalPrice,
+  };
 
   String get name => nameController.text;
   double get singlePrice => double.tryParse(singlePriceController.text.replaceAll(',', '')) ?? 0.0;
@@ -136,6 +156,7 @@ class Item {
     totalPriceController.dispose();
   }
 }
+
 
 class User {
   final String username;
