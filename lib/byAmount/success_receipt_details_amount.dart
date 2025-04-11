@@ -45,6 +45,8 @@ class _SuccessReceiptScreenState extends State<SuccessReceiptScreen> with Single
       buffer.writeln("👤 ${person.name}: Rp${NumberFormat("#,###").format(person.amount)}");
     }
 
+    buffer.writeln("Download OCTO Mobile now to enjoy multiple cashback and easily split your bill! https://play.google.com/store/apps/details?id=id.co.cimbniaga.mobile.android&hl=id");
+
     await Share.shareXFiles(
       [XFile(imagePath.path)],
       text: buffer.toString(),

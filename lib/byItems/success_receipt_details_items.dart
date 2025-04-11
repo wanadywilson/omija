@@ -120,6 +120,8 @@ Future<void> _shareReceipt() async {
       buffer.writeln("👤 ${person.name}: Rp${NumberFormat("#,###").format(person.amount)}");
     }
 
+    buffer.writeln("Download OCTO Mobile now to enjoy multiple cashback and easily split your bill! https://play.google.com/store/apps/details?id=id.co.cimbniaga.mobile.android&hl=id");
+
     // Share both image and text
     await Share.shareXFiles(
       [XFile(imagePath.path)],
