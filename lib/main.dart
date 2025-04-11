@@ -315,42 +315,53 @@ class HomeScreen extends StatelessWidget {
   ),
 
 
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        currentIndex: 0, // or use a variable for dynamic selection
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Color.fromARGB(255,94,19,16),
-        items: [
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              ("images/bottom_first.jpg"),
-              scale: 2.2
-            ),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              ("images/bottom_second.jpg"),
-              scale: 2.2
-            ),
-            label: 'My Accounts',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              ("images/bottom_third.jpg"),
-              scale: 2.2
-            ),
-            label: 'Wealth',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset(
-              ("images/bottom_fourth.jpg"),
-              scale: 2.2
-            ),
-            label: 'Settings',
+          bottomNavigationBar: Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black26,
+            blurRadius: 12,
+            offset: Offset(0, -4),
           ),
         ],
       ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.only(
+          topLeft: Radius.circular(24),
+          topRight: Radius.circular(24),
+        ),
+        child: BottomNavigationBar(
+          backgroundColor: Colors.white,
+          elevation: 0,
+          selectedItemColor: Color.fromARGB(255, 94, 19, 16),
+          unselectedItemColor: Colors.grey,
+          currentIndex: 0,
+          type: BottomNavigationBarType.fixed,
+          items: [
+            BottomNavigationBarItem(
+              icon: Image.asset("images/bottom_first.jpg", scale: 2.2),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset("images/bottom_second.jpg", scale: 2.2),
+              label: 'My Accounts',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset("images/bottom_third.jpg", scale: 2.2),
+              label: 'Wealth',
+            ),
+            BottomNavigationBarItem(
+              icon: Image.asset("images/bottom_fourth.jpg", scale: 2.2),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),)
 
       
     );

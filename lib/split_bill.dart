@@ -13,12 +13,20 @@ class SplitBillScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Split Bill', style: TextStyle(color: Colors.white),),
-        backgroundColor: Color.fromARGB(255, 94, 19, 16),
-        iconTheme: IconThemeData(
-    color: Colors.white, // Change back arrow color here
+  title: Text(
+    'Split Bill',
+    style: TextStyle(color: Colors.white),
   ),
-      ),
+  backgroundColor: Color.fromARGB(255, 94, 19, 16),
+  iconTheme: IconThemeData(color: Colors.white),
+  shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.only(
+      bottomLeft: Radius.circular(20),
+      bottomRight: Radius.circular(20),
+    ),
+  ),
+),
+
       body: Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(
