@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:camera/camera.dart';
 import 'byItems/byOCR/camera.dart';
 import 'split_bill_manual_selection.dart';
-
+import 'history/history_screen.dart';
 
 class SplitBillScreen extends StatelessWidget {
   const SplitBillScreen({super.key, required this.cameras});
@@ -84,7 +84,13 @@ class SplitBillScreen extends StatelessWidget {
                     style: TextStyle(fontWeight: FontWeight.bold)),
                 subtitle: Text(
                     'Check your past bills and possible outstanding'),
-                onTap: () {},
+                onTap: () {
+  Navigator.push(
+    context,
+    MaterialPageRoute(builder: (context) => HistoryScreen()),
+  );
+},
+
               ),
             ),
           ],

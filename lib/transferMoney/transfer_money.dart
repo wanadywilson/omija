@@ -168,26 +168,33 @@ void initState() {
   }
 
   Widget _transferFromCard() {
-    return Container(
-      height: 80,
-      padding: EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(10),
-        boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
-      ),
-      child: Row(
-        children: [
-          Image.asset('images/account.jpg', scale: 1),
-          SizedBox(width: 10),
-          Text(
-            "OCTO Savers (••••5891)",
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-          ),
-        ],
-      ),
-    );
-  }
+  return Container(
+    height: 80,
+    padding: EdgeInsets.all(12),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(10),
+      boxShadow: [BoxShadow(color: Colors.grey, blurRadius: 5)],
+    ),
+    child: Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Row(
+          children: [
+            Image.asset('images/account.jpg', scale: 1),
+            SizedBox(width: 10),
+            Text(
+              "OCTO Savers (••••5891)",
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+          ],
+        ),
+        Icon(Icons.keyboard_arrow_down, color: Colors.grey[700]), // ⬇️ New Icon
+      ],
+    ),
+  );
+}
+
 
   Widget _inputField(String label, String hint, IconData? icon, {String? prefix, required TextEditingController controller, bool isNumeric = false, bool formatAmount = false}) {
     return Column(

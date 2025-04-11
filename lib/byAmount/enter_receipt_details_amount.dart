@@ -449,7 +449,7 @@ Color _getColorForPerson(int index) {
                       tax: 0,
                       taxPercentage: 0,
                       subTotal: 0,
-                      method: "",
+                      method: "Items",
                     ),
                   ),
                 ),

@@ -41,7 +41,7 @@ Future<Receipt> parseReceiptFromOcrResponse(Map<String, dynamic> ocrJson) async 
     grandTotal: grandTotal,
     people: [Person(name: 'Me')],
     items: items,
-    method: "OCR",
+    method: "Scan",
   );
 }
 
@@ -117,7 +117,37 @@ class DisplayPictureScreen extends StatelessWidget {
                       showDialog(
                         context: context,
                         barrierDismissible: false,
-                        builder: (_) => Center(child: CircularProgressIndicator()),
+                        builder: (_) => Center(
+  child: Container(
+    
+    width: 180,
+    padding: EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black12,
+          blurRadius: 10,
+          offset: Offset(0, 4),
+        ),
+      ],
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset('images/omo_loading.png', width: 120), // adjust path/size as needed
+        SizedBox(height: 16),
+        CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 94, 19, 16)),
+        ),
+        SizedBox(height: 12),
+        
+      ],
+    ),
+  ),
+)
+,
                       );
 
                       try {

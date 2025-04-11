@@ -70,7 +70,36 @@ class _CameraScreenState extends State<CameraScreen> {
                 if (snapshot.connectionState == ConnectionState.done) {
                   return CameraPreview(_controller);
                 } else {
-                  return Center(child: CircularProgressIndicator());
+                  return Center(
+  child: Container(
+    
+    width: 180,
+    padding: EdgeInsets.all(20),
+    decoration: BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Colors.black12,
+          blurRadius: 10,
+          offset: Offset(0, 4),
+        ),
+      ],
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Image.asset('images/omo_loading.png', width: 120), // adjust path/size as needed
+        SizedBox(height: 16),
+        CircularProgressIndicator(
+          valueColor: AlwaysStoppedAnimation<Color>(Color.fromARGB(255, 94, 19, 16)),
+        ),
+        SizedBox(height: 12),
+      ],
+    ),
+  ),
+)
+;
                 }
               },
             ),

@@ -33,7 +33,7 @@ class _OctoLoginScreenState extends State<OctoLoginScreen> {
   );
 
   try {
-    final data = [{"username":"dgsianipar","long_name":"Dedy Sianipar","phone_number":"088012341234"},{"username":"wwanady","long_name":"Wilson Wanady","phone_number":"088043211234"},{"username":"hsutomo","long_name":"Harto Sutomo","phone_number":"088011223344"}];
+    final data = [{"username":"dgsianipar","long_name":"Dedy Gusnadi Sianipar","phone_number":"081290091234"},{"username":"wwanady","long_name":"Wilson Wanady","phone_number":"08999912345"},{"username":"dnurmalasari","long_name":"Della Nurmalasari","phone_number":"087772222089"},{"username":"hsutomo","long_name":"Harto Sutomo","phone_number":"081932881588"},{"username":"imamahit","long_name":"Ivan Mamahit","phone_number":"081219077999"}];
     knownUsers = List<Map<String, dynamic>>.from(data);
     // Fetch known users list once if empty
     /*

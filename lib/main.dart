@@ -42,6 +42,8 @@ class HomeScreen extends StatelessWidget {
   final List<CameraDescription> cameras;
   const HomeScreen({super.key, required this.cameras});
 
+  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,7 +71,7 @@ class HomeScreen extends StatelessWidget {
                    crossAxisAlignment: CrossAxisAlignment.start,
                    children: [
                     Text(
-                        'Good evening,',
+                         _getGreeting(),
                         style: TextStyle(color: Colors.white, fontSize: 18),
                     ),
                     Text(
@@ -365,4 +367,19 @@ class HomeScreen extends StatelessWidget {
     );
 
   }
+
+  String _getGreeting() {
+  final hour = DateTime.now().hour;
+
+  if (hour >= 5 && hour < 12) {
+    return 'Good morning,';
+  } else if (hour >= 12 && hour < 17) {
+    return 'Good afternoon,';
+  } else if (hour >= 17 && hour < 21) {
+    return 'Good evening,';
+  } else {
+    return 'Good night,';
+  }
+}
+
 }

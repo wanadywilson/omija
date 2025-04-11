@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'globals.dart';
+import 'package:share_plus/share_plus.dart';
 
 class QRPersonDetailScreen extends StatelessWidget {
   final String personName;
@@ -24,14 +25,24 @@ class QRPersonDetailScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Color.fromARGB(255, 94, 19, 16),
       appBar: AppBar(
-        backgroundColor: Color.fromARGB(255, 94, 19, 16),
-        title: Text("Generate QRIS", style: TextStyle(color: Colors.white)),
-        centerTitle: true,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => Navigator.pop(context),
-        ),
-      ),
+  backgroundColor: Color.fromARGB(255, 94, 19, 16),
+  title: Text("Generate QRIS", style: TextStyle(color: Colors.white)),
+  centerTitle: true,
+  leading: IconButton(
+    icon: Icon(Icons.arrow_back, color: Colors.white),
+    onPressed: () => Navigator.pop(context),
+  ),
+  actions: [
+    IconButton(
+      icon: Icon(Icons.share, color: Colors.white),
+      onPressed: () {
+        final formattedAmount = NumberFormat("#,###").format(amount);
+        final message = "Split Bill with OCTO Mobile - Rp$formattedAmount";
+        Share.share(message);
+      },
+    ),
+  ],
+),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(24),
         child: Container(

@@ -24,6 +24,21 @@ class Person {
     List<Item>? items,
     this.username,
   }) : items = items ?? [];
+
+  factory Person.fromJson(Map<String, dynamic> json) {
+    return Person(
+      name: json['name'],
+      phone: json['phone'],
+      amount: (json['amount'] as num).toDouble(),
+      percentage: (json['percentage'] as num).toDouble(),
+      tax: (json['tax'] as num).toDouble(),
+      serviceCharge: (json['serviceCharge'] as num).toDouble(),
+      username: json['username'],
+    );
+  }
+
+
+
 }
 
 
@@ -59,6 +74,24 @@ class Receipt {
     required this.transactionTime
     
   }): items = items ?? [];
+
+  factory Receipt.fromJson(Map<String, dynamic> json) {
+    return Receipt(
+      title: json['title'],
+      date: json['date'],
+      grandTotal: (json['grandTotal'] as num).toDouble(),
+      subTotal: (json['subTotal'] as num).toDouble(),
+      serviceCharge: (json['serviceCharge'] as num).toDouble(),
+      tax: (json['tax'] as num).toDouble(),
+      serviceChargePercentage: (json['serviceChargePercentage'] as num).toDouble(),
+      taxPercentage: (json['taxPercentage'] as num).toDouble(),
+      method: json['method'],
+      transactionTime: json['transactionTime'],
+      people: (json['people'] as List).map((p) => Person.fromJson(p)).toList(),
+    );
+  }
+
+
 }
 
 
